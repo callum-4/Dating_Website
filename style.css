@@ -1,0 +1,19 @@
+body{
+    background-image: url('astrolove_logo.jpg');
+   
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #220c34;
+}
+.formHolder{
+    max-width: 600px;
+    display: flex;
+    text-align: center;
+}
+.generalText{
+    color: white;
+}
+.buttonHolder{
+    text-align: center;
+}
+
