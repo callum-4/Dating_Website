@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html>
 <head>
     <title>Dating or sumn idk</title>
@@ -6,15 +5,26 @@
 </head>
 <body>
 <?php
-			/*$conn = mysqli_connect("localhost", "callum", "test123", "dating website");
-			if (!$conn){
-				echo "database error" . mysqli_connect_error();
-			}
-			$validation_error = "";
-			$getAllQuery = "SELECT * FROM users";
-			$result = mysqli_query($conn, $getAllQuery);
-			$users = mysqli_fetch_all($result, MYSQLI_ASSOC); 
-			mysqli_free_result($result);	*/
+    function console_log($output, $with_script_tags = true)
+    {
+        $js_code = 'console.log(' . json_encode($output, JSON_HEX_TAG) . ');';
+        if ($with_script_tags)
+        {
+            $js_code = '<script>' . $js_code . '</script>';
+        }
+        echo $js_code;
+    }
+
+	try{
+        $conn = mysqli_connect("localhost", "callum", "test123", "dating website");
+        $validation_error = "";
+        $getAllQuery = "SELECT * FROM users";
+        $result = mysqli_query($conn, $getAllQuery);
+        $users = mysqli_fetch_all($result, MYSQLI_ASSOC); 
+        mysqli_free_result($result);
+    }catch(Exception $e){
+        console_log("Error: ". $e->getMessage());
+    }
 	?>
 <div class="home">
 <div class="formHolder" >
