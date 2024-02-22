@@ -19,7 +19,7 @@
 <div class="home">
 <div class="formHolder" >
     <br>
-    <form method="post" id="signUp" action="formHandler.php">
+    <form method="post" id="signUp" action="./Controller/formHandler.php">
     <div class="generalText">
     Sign up:
     </div>
@@ -33,7 +33,7 @@
     
     <br>
 
-    <form method ="post" id="Login" action="formHandler.php">
+    <form method ="post" id="Login" action="./Controller/formHandler.php">
     <div class="generalText">
     Login:
     </div>

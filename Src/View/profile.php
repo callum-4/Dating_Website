@@ -1,7 +1,7 @@
 <html>
 <head>
     <title>Set up your profile!</title>
-    <link href="./style.css" rel="stylesheet">
+    <link href="../style.css" rel="stylesheet">
 </head>
 <body>
     <div class="buttonHolder">  
