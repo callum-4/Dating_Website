@@ -28,16 +28,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $query = "INSERT INTO users (Email, Password) VALUES (?,?);";
                 $statement = $conn->prepare($query);
                 $statement->execute([$email, $password]);
-                //$IDpushquery = "INSERT INTO profile(Profile_ID) SELECT user_id FROM users WHERE Email ='$email';";
-                //$IDstatement = $conn->prepare($IDpushquery);
-                //$IDstatement->execute();
-				//session_start();
+                /*
+                I dont get what this is doing and it workes when commented out
+                $IDpushquery = "INSERT INTO profile(Profile_ID) SELECT user_id FROM users WHERE Email ='$email';";
+                $IDstatement = $conn->prepare($IDpushquery);
+                $IDstatement->execute();
+				session_start();
                 $_SESSION['email'] = $email;
 
                 $conn = null;
                 $statement = null;
-                $IDstatement = null;
-                header("Location: ../View/profile.php", true, 200);
+                $IDstatement = null;*/
+                header("Location: ../View/profile.php");
 
             } else {
                 echo "That email is already in use";
