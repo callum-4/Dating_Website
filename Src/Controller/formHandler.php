@@ -18,7 +18,7 @@ function uniqueEmail($email, $mysqli) {
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $action = $_POST["action"];
     try {
-        require_once "homePage.php";
+        require_once "index.php";
 
         if ($action === "signUp") {
             $email = $_POST["email"];
@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $conn = null;
                 $statement = null;
                 $IDstatement = null;
-                header("Location: ./profile.php");
+                header("Location: ../index.php");
 
             } else {
                 echo "That email is already in use";
@@ -55,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 session_start();
                 $_SESSION['email'] = $email;
 
-                header("Location: ./loggedIn.php");
+                header("Location: ../View/loggedIn.php");
 
                 exit();
             } else {
