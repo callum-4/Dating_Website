@@ -1,24 +1,25 @@
 <html>
 <head>
-    <title>Dating or sumn idk</title>
+    <title>Astrolove</title>
     <link href="./style.css" rel="stylesheet">
 </head>
 <body>
 <?php
-			$conn = mysqli_connect("localhost", "callum", "test123", "dating website");
-			if (!$conn){
-				echo "database error" . mysqli_connect_error();
-			}
-			$validation_error = "";
-			$getAllQuery = "SELECT * FROM users";
-			$result = mysqli_query($conn, $getAllQuery);
-			$users = mysqli_fetch_all($result, MYSQLI_ASSOC); 
-			mysqli_free_result($result);	
+	try{
+        $conn = mysqli_connect("localhost", "a", "test123","test");
+        $validation_error = "";
+        $getAllQuery = "SELECT * FROM users";
+        $result = mysqli_query($conn, $getAllQuery);
+        $users = mysqli_fetch_all($result, MYSQLI_ASSOC); 
+        mysqli_free_result($result);
+    }catch(Exception $e){
+        console_log("Error: ". $e->getMessage());
+    }
 	?>
 <div class="home">
 <div class="formHolder" >
     <br>
-    <form method="post" id="signUp" action="formHandler.php">
+    <form method="post" id="signUp" action="./Controller/formHandler.php">
     <div class="generalText">
     Sign up:
     </div>
@@ -32,7 +33,7 @@
     
     <br>
 
-    <form method ="post" id="Login" action="formHandler.php">
+    <form method ="post" id="Login" action="./Controller/formHandler.php">
     <div class="generalText">
     Login:
     </div>

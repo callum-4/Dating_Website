@@ -6,7 +6,7 @@
     ?>
     <head>
         <title>You've been logged in!</title> 
-        <link href='./style.css' rel='stylesheet'> 
+        <link href='../style.css' rel='stylesheet'> 
     </head>
     <body id="loggedBody">
         <div class="loggedPage">
