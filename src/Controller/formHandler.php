@@ -92,5 +92,44 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     } catch (mysqli_sql_exception $e) {
         die("Post failed." . $e->getMessage());
     }
+
+
+
+function getZodiacSign($birthdate) {
+    // Convert birthdate to a DateTime object
+    $dateTime = new DateTime($birthdate);
+    // Extract month and day
+    $month = $dateTime->format('n');
+    $day = $dateTime->format('j');
+
+    // Zodiac signs and their ranges
+    $zodiacSigns = array(
+        'Capricorn' => array('start' => '12-22', 'end' => '01-19'),
+        'Aquarius' => array('start' => '01-20', 'end' => '02-18'),
+        'Pisces' => array('start' => '02-19', 'end' => '03-20'),
+        'Aries' => array('start' => '03-21', 'end' => '04-19'),
+        'Taurus' => array('start' => '04-20', 'end' => '05-20'),
+        'Gemini' => array('start' => '05-21', 'end' => '06-20'),
+        'Cancer' => array('start' => '06-21', 'end' => '07-22'),
+        'Leo' => array('start' => '07-23', 'end' => '08-22'),
+        'Virgo' => array('start' => '08-23', 'end' => '09-22'),
+        'Libra' => array('start' => '09-23', 'end' => '10-22'),
+        'Scorpio' => array('start' => '10-23', 'end' => '11-21'),
+        'Sagittarius' => array('start' => '11-22', 'end' => '12-21')
+    );
+
+    // Iterate through each sign and check if the birthday falls within its range
+    foreach ($zodiacSigns as $sign => $range) {
+        $start = DateTime::createFromFormat('m-d', $range['start']);
+        $end = DateTime::createFromFormat('m-d', $range['end']);
+        if (($month == $start->format('n') && $day >= $start->format('j')) ||
+            ($month == $end->format('n') && $day <= $end->format('j'))) {
+            return $sign;
+        }
+    }
+    return null; // Return null if no sign matches
+}
+
 }
 ?>
+
