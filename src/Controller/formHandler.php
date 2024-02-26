@@ -69,9 +69,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $name = $_POST["name"];
             $gender = $_POST["gender"];
             $preferredSex = $_POST["preferredSex"];
-            $age = $_POST["age"];
             $description = $_POST["description"];
-            $interests = $_POST["interests"];
+            $dateOfBirth = $_POST["dateOfBirth"];
+            //$interests = $_POST["interests"];
 			session_start();
             $email = $_SESSION['email'];
             $IDpullquery = "SELECT user_id FROM users WHERE Email ='$email';";
@@ -80,10 +80,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $result = $IDpullstatement->get_result()->fetch_assoc();
             $ID = $result["user_id"];
 			echo $ID;
-            echo $name;
-            $query = "UPDATE profile SET Name=?, Gender=?, Preffered_Sex=?, Age=?, Description=?, Interests=? WHERE Profile_ID=?";
+            echo $name;$query = "UPDATE profile SET Name=?, Gender=?, Preffered_Sex=?, Description=?,  Date_of_Birth=? WHERE Profile_ID=?";
             $statement = $conn->prepare($query);
-            $statement->execute([$name, $gender, $preferredSex, $age, $description, $interests, $ID]);
+            $statement->execute([$name, $gender, $preferredSex, $description, $dateOfBirth, $ID]);
 
             $conn = null;
             $statement = null;

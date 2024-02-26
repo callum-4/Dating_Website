@@ -35,7 +35,9 @@
             <br>
             <br>
         </div>    
-        <input type="text" name="age" placeholder="Age">
+        <label for="dateOfBirth">Date of birth:</label>
+        <br>
+        <input type="date" name="dateOfBirth" >
         <br>
         
         <textarea name="description" placeholder="Description"></textarea>
