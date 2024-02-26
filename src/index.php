@@ -6,7 +6,7 @@
 <body>
 <?php
 	try{
-        $conn = mysqli_connect("localhost", "a", "test123","test");
+        $conn = mysqli_connect("localhost", "callum", "test123","dating website");
         $validation_error = "";
         $getAllQuery = "SELECT * FROM users";
         $result = mysqli_query($conn, $getAllQuery);
