@@ -42,8 +42,7 @@
         
         <textarea name="description" placeholder="Description"></textarea>
         <br>
-        
-        <textarea name="interests" placeholder="Interests"></textarea>
+        <textarea name="interests" placeholder="Interests (separate by comma)"></textarea>
         <br>
         <input type="hidden" name="action" value="Profile">
         

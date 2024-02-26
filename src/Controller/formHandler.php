@@ -71,7 +71,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $preferredSex = $_POST["preferredSex"];
             $description = $_POST["description"];
             $dateOfBirth = $_POST["dateOfBirth"];
-            //$interests = $_POST["interests"];
+            $interests = $_POST["interests"];
+            //break intrests up into an array
+            $intrestUntrimmed =  preg_split("/\,/", $interests);
+            $interestsTrimmed;
+            for($i=0; $i < count($intrestUntrimmed); $i++){
+                $interestsTrimmed[$i] = trim($intrestUntrimmed[$i], " \n\r\t\v\x00,");
+            }
+
 			session_start();
             $email = $_SESSION['email'];
             $IDpullquery = "SELECT user_id FROM users WHERE Email ='$email';";
@@ -79,10 +86,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $IDpullstatement->execute();
             $result = $IDpullstatement->get_result()->fetch_assoc();
             $ID = $result["user_id"];
-			echo $ID;
-            echo $name;$query = "UPDATE profile SET Name=?, Gender=?, Preffered_Sex=?, Description=?,  Date_of_Birth=? WHERE Profile_ID=?";
+            //create the profile
+            $query = "UPDATE profile SET Name=?, Gender=?, Preffered_Sex=?, Description=?,  Date_of_Birth=? WHERE Profile_ID=?";
             $statement = $conn->prepare($query);
             $statement->execute([$name, $gender, $preferredSex, $description, $dateOfBirth, $ID]);
+
+            //create the profiles intrests
+            $interestsQuery = 'INSERT INTO `profile_intrests` (`Profile_ID`, `intrest`) VALUES ';
+            $query_parts;
+            for($x=0; $x<count($interestsTrimmed); $x++){
+                $query_parts[] = "('" . $ID . "', '" . $interestsTrimmed[$x] . "')";
+            }
+            $interestsQuery .= implode(',', $query_parts);
+            $intrestsStatement = $conn->prepare($interestsQuery);
+            $intrestsStatement->execute();
 
             $conn = null;
             $statement = null;
