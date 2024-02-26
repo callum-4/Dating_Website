@@ -1,3 +1,5 @@
+<link ref="../style.css" rel="stylesheet">
+<div class="generalText">
 <?php
 
 // Variable to determine if there is currently a user signed in (not currently in use)
@@ -28,8 +30,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $query = "INSERT INTO users (Email, Password) VALUES (?,?);";
                 $statement = $conn->prepare($query);
                 $statement->execute([$email, $password]);
-                /*
-                I dont get what this is doing and it workes when commented out
+                
+                
                 $IDpushquery = "INSERT INTO profile(Profile_ID) SELECT user_id FROM users WHERE Email ='$email';";
                 $IDstatement = $conn->prepare($IDpushquery);
                 $IDstatement->execute();
@@ -38,8 +40,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 $conn = null;
                 $statement = null;
-                $IDstatement = null;*/
-                header("Location: ../View/profile.php");
+                $IDstatement = null;
+                header("Location: ../View/profileInput.php");
 
             } else {
                 echo "That email is already in use";
@@ -78,6 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $result = $IDpullstatement->get_result()->fetch_assoc();
             $ID = $result["user_id"];
 			echo $ID;
+            echo $name;
             $query = "UPDATE profile SET Name=?, Gender=?, Preffered_Sex=?, Age=?, Description=?, Interests=? WHERE Profile_ID=?";
             $statement = $conn->prepare($query);
             $statement->execute([$name, $gender, $preferredSex, $age, $description, $interests, $ID]);
@@ -85,7 +88,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $conn = null;
             $statement = null;
             $IDstatement = null;
-          //  header("Location: ./loggedIn.php");
+            header("Location: ../View/loggedIn.php");
         } else {
             echo "Invalid action";
         }
@@ -94,3 +97,4 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 ?>
+</div>
