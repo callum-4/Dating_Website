@@ -1,3 +1,5 @@
+<link ref="../style.css" rel="stylesheet">
+<div class="generalText">
 <?php
 
 // Variable to determine if there is currently a user signed in (not currently in use)
@@ -86,7 +88,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $conn = null;
             $statement = null;
             $IDstatement = null;
-          //  header("Location: ../View/loggedIn.php");
+            header("Location: ../View/loggedIn.php");
         } else {
             echo "Invalid action";
         }
@@ -95,3 +97,4 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 ?>
+</div>
