@@ -87,9 +87,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $result = $IDpullstatement->get_result()->fetch_assoc();
             $ID = $result["user_id"];
             //create the profile
-            $query = "UPDATE profile SET Name=?, Gender=?, Preffered_Sex=?, Description=?,  Date_of_Birth=? WHERE Profile_ID=?";
+            $query = "UPDATE profile SET Name=?, Gender=?, Description=?,  Date_of_Birth=? WHERE Profile_ID=?";
             $statement = $conn->prepare($query);
-            $statement->execute([$name, $gender, $preferredSex, $description, $dateOfBirth, $ID]);
+            $statement->execute([$name, $gender, $description, $dateOfBirth, $ID]);
 
             //create the profiles intrests
             $interestsQuery = 'INSERT INTO `profile_intrests` (`Profile_ID`, `intrest`) VALUES ';
@@ -100,6 +100,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $interestsQuery .= implode(',', $query_parts);
             $intrestsStatement = $conn->prepare($interestsQuery);
             $intrestsStatement->execute();
+            
+            //create seeking for profile
+            $seeking_query = "INSERT INTO `seeking` (`Profile_ID`, `Gender`) VALUES ('$ID','$preferredSex')";
+            echo $seeking_query;
+            $seekingStatement = $conn->prepare($seeking_query);
+            $seekingStatement->execute();
 
             $conn = null;
             $statement = null;
