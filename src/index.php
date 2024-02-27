@@ -16,7 +16,6 @@
         console_log("Error: ". $e->getMessage());
     }
 	?>
-<div class="home">
 <div class="formHolder" >
     <br>
     <form method="post" id="signUp" action="./Controller/formHandler.php">
@@ -45,6 +44,6 @@
     <input type="submit" value="Submit">
     </form>
 </div>
-</div>
+
 </body>
 </html>

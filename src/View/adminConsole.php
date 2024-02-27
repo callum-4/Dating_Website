@@ -1,5 +1,6 @@
 <html>
     <div class="generalText">
+    
     <?php
       session_start();
       $email = $_SESSION['email'];
