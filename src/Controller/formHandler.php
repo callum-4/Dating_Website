@@ -69,9 +69,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $name = $_POST["name"];
             $gender = $_POST["gender"];
             $preferredSex = $_POST["preferredSex"];
-            $age = $_POST["age"];
             $description = $_POST["description"];
+            $dateOfBirth = $_POST["dateOfBirth"];
             $interests = $_POST["interests"];
+            //break interests up into an array
+            $interestUntrimmed =  preg_split("/\,/", $interests);
+            $interestsTrimmed;
+            for($i=0; $i < count($interestUntrimmed); $i++){
+                $interestsTrimmed[$i] = trim($interestUntrimmed[$i], " \n\r\t\v\x00,");
+            }
+
 			session_start();
             $email = $_SESSION['email'];
             $IDpullquery = "SELECT user_id FROM users WHERE Email ='$email';";
@@ -79,11 +86,26 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $IDpullstatement->execute();
             $result = $IDpullstatement->get_result()->fetch_assoc();
             $ID = $result["user_id"];
-			echo $ID;
-            echo $name;
-            $query = "UPDATE profile SET Name=?, Gender=?, Preffered_Sex=?, Age=?, Description=?, Interests=? WHERE Profile_ID=?";
+            //create the profile
+            $query = "UPDATE profile SET Name=?, Gender=?, Description=?,  Date_of_Birth=? WHERE Profile_ID=?";
             $statement = $conn->prepare($query);
-            $statement->execute([$name, $gender, $preferredSex, $age, $description, $interests, $ID]);
+            $statement->execute([$name, $gender, $description, $dateOfBirth, $ID]);
+
+            //create the profiles intrests
+            $interestsQuery = 'INSERT INTO `profile_interests` (`Profile_ID`, `interest`) VALUES ';
+            $query_parts;
+            for($x=0; $x<count($interestsTrimmed); $x++){
+                $query_parts[] = "('" . $ID . "', '" . $interestsTrimmed[$x] . "')";
+            }
+            $interestsQuery .= implode(',', $query_parts);
+            $interestsStatement = $conn->prepare($interestsQuery);
+            $interestsStatement->execute();
+            
+            //create seeking for profile
+            $seeking_query = "INSERT INTO `seeking` (`Profile_ID`, `Gender`) VALUES ('$ID','$preferredSex')";
+            echo $seeking_query;
+            $seekingStatement = $conn->prepare($seeking_query);
+            $seekingStatement->execute();
 
             $conn = null;
             $statement = null;

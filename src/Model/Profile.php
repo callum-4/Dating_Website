@@ -3,7 +3,7 @@ class Profile{
 
     public $id;
     public $email;
-    public $type;
+    public $gender;
     public $name;
     public $dob;
     public $description;
@@ -11,10 +11,10 @@ class Profile{
     public $bannedUntil;
 
 
-    function __construct($id, $email, $type, $name, $dob, $description, $interests, $bannedUntil){
+    function __construct($id, $email, $gender, $name, $dob, $description, $interests, $bannedUntil){
     $this-> id = $id;
     $this-> email = $email;
-    $this-> type = $type;
+    $this-> gender = $gender;
     $this-> name = $name;
     $this-> dob = $dob;
     $this-> description = $description;
@@ -28,7 +28,7 @@ class Profile{
         return [
             'id' => $this->id,
             'email' => $this->email,
-            'type' => $this->type,
+            'gender' => $this->gender,
             'name' => $this->name,
             'dob' => $this->dob,
             'description' => $this->description,
@@ -39,7 +39,7 @@ class Profile{
   
 }
 
-$testProfile = new Profile(1, 'qwerty@gmail.com', 'user', 'Roger Shaw','2002-05-10', 'description', 'running', $bannedUntil);
+$testProfile = new Profile(1, 'qwerty@gmail.com', 'male', 'Roger Shaw','2002-05-10', 'description', 'running', $bannedUntil);
 
     // used to display test profile details
   $profileDetails = $testProfile->get_profile();
