@@ -1,10 +1,3 @@
-<head>
-    <title>ERROR</title>
-</head>
-<link ref="../style.css" rel="stylesheet">
-<body>
-<div class="generalText">
-    
 <?php
 
 // Variable to determine if there is currently a user signed in (not currently in use)
@@ -125,4 +118,4 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 ?>
 </div>
-</body>
+
