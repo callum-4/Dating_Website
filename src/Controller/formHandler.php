@@ -1,5 +1,10 @@
+<head>
+    <title>ERROR</title>
+</head>
 <link ref="../style.css" rel="stylesheet">
+<body>
 <div class="generalText">
+    
 <?php
 
 // Variable to determine if there is currently a user signed in (not currently in use)
@@ -49,22 +54,44 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         } else if ($action === "Login") {
             $email = $_POST["email"];
             $password = $_POST["password"];
-            $query = "SELECT Password FROM users WHERE Email = '$email';";
-            $result = mysqli_query($conn, $query);
-            $fetched_user = mysqli_fetch_array($result);
+                if(str_contains($email, "@admin.com")){
+                $query = "SELECT Password FROM admin WHERE Email = '$email';";
+                $result = mysqli_query($conn, $query);
+                $fetched_user = mysqli_fetch_array($result);
 
-            if ($password == $fetched_user["Password"]) {
-                echo "Signed in";
-                $user_logged = TRUE;
-                session_start();
-                $_SESSION['email'] = $email;
+                if ($password == $fetched_user["Password"]) {
+                    echo "Signed in";
+                    $user_logged = TRUE;
+                    session_start();
+                    $_SESSION['email'] = $email;
 
-                header("Location: ../View/loggedIn.php");
+                    header("Location: ../View/adminConsole.php");
 
-                exit();
-            } else {
-                echo "Incorrect password";
+                    exit();
+                }else {
+                   echo "Incorrect password";
             }
+            
+
+
+                }else{
+                    $query = "SELECT Password FROM users WHERE Email = '$email';";
+                    $result = mysqli_query($conn, $query);
+                    $fetched_user = mysqli_fetch_array($result);
+
+                    if ($password == $fetched_user["Password"]) {
+                        echo "Signed in";
+                        $user_logged = TRUE;
+                        session_start();
+                        $_SESSION['email'] = $email;
+
+                        header("Location: ../View/loggedIn.php");
+
+                        exit();
+                    } else {
+                        echo "Incorrect password";
+                    }
+                }
         } else if ($action === "Profile") {
             $name = $_POST["name"];
             $gender = $_POST["gender"];
@@ -98,3 +125,4 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 ?>
 </div>
+</body>
