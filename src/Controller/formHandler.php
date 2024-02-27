@@ -72,11 +72,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $description = $_POST["description"];
             $dateOfBirth = $_POST["dateOfBirth"];
             $interests = $_POST["interests"];
-            //break intrests up into an array
-            $intrestUntrimmed =  preg_split("/\,/", $interests);
+            //break interests up into an array
+            $interestUntrimmed =  preg_split("/\,/", $interests);
             $interestsTrimmed;
-            for($i=0; $i < count($intrestUntrimmed); $i++){
-                $interestsTrimmed[$i] = trim($intrestUntrimmed[$i], " \n\r\t\v\x00,");
+            for($i=0; $i < count($interestUntrimmed); $i++){
+                $interestsTrimmed[$i] = trim($interestUntrimmed[$i], " \n\r\t\v\x00,");
             }
 
 			session_start();
@@ -92,14 +92,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $statement->execute([$name, $gender, $description, $dateOfBirth, $ID]);
 
             //create the profiles intrests
-            $interestsQuery = 'INSERT INTO `profile_intrests` (`Profile_ID`, `intrest`) VALUES ';
+            $interestsQuery = 'INSERT INTO `profile_interests` (`Profile_ID`, `interest`) VALUES ';
             $query_parts;
             for($x=0; $x<count($interestsTrimmed); $x++){
                 $query_parts[] = "('" . $ID . "', '" . $interestsTrimmed[$x] . "')";
             }
             $interestsQuery .= implode(',', $query_parts);
-            $intrestsStatement = $conn->prepare($interestsQuery);
-            $intrestsStatement->execute();
+            $interestsStatement = $conn->prepare($interestsQuery);
+            $interestsStatement->execute();
             
             //create seeking for profile
             $seeking_query = "INSERT INTO `seeking` (`Profile_ID`, `Gender`) VALUES ('$ID','$preferredSex')";
