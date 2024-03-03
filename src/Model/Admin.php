@@ -29,7 +29,7 @@
             return date('Y-m-d', strtotime("+30 days"));
         }
 
-        function editUser(){
+        function editProfile(){
             //finnish once profile complete
         }
 
