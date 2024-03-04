@@ -11,15 +11,15 @@ class Profile{
     public $bannedUntil;
 
 
-    function __construct($id, $email, $gender, $name, $dob, $description, $interests, $bannedUntil){
-    $this-> id = $id;
-    $this-> email = $email;
-    $this-> gender = $gender;
-    $this-> name = $name;
-    $this-> dob = $dob;
-    $this-> description = $description;
-    $this-> interests = $interests;
-    $this->bannedUntil = new DateTime('2000-10-10'); //deafult banned until
+    function __construct(String $id, String $email, String $gender, String $name, $dob, String $description, String $interests, $bannedUntil){
+    $this->id = $id;
+    $this->email = $email;
+    $this->gender = $gender;
+    $this->name = $name;
+    $this->dob = $dob;
+    $this->description = $description;
+    $this->interests = $this->createInterestsArray($interests);
+    //$this->bannedUntil = new DateTime('2000-10-10'); //deafult banned until
     }
 
     
@@ -35,6 +35,29 @@ class Profile{
             'interests' => $this->interests,
             'bannedUntil'=> $this->bannedUntil
         ];
+    }
+
+    function createInterestsArray(string $interests){
+        $interestUntrimmed =  preg_split("/\,/", $interests);
+        $interestsTrimmed = array();
+        for($i=0; $i < count($interestUntrimmed); $i++){
+            $interestsTrimmed[$i] = trim($interestUntrimmed[$i], " \n\r\t\v\x00,");
+        }
+        return $interestsTrimmed;
+    }
+
+    function getInsertIntrestsQuery(){
+        $interestsQuery = 'INSERT INTO `profile_interests` (`Profile_ID`, `interest`) VALUES ';
+        $query_parts = array();
+        for($x=0; $x<count($this->interests); $x++){
+            $query_parts[] = "('" . $this->id . "', '" . $this->interests[$x] . "')";
+        }
+        $interestsQuery .= implode(',', $query_parts);
+        return $interestsQuery;
+    }
+
+    function getUpdateProfileInDBQuery(){
+        return "UPDATE profile SET Name=$this->name, Gender=$this->gender, Description=$this->description,  Date_of_Birth=$this->dob WHERE Profile_ID=$this->id";
     }
   
 }

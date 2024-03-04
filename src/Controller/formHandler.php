@@ -93,11 +93,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $dateOfBirth = $_POST["dateOfBirth"];
             $interests = $_POST["interests"];
             //break interests up into an array
-            $interestUntrimmed =  preg_split("/\,/", $interests);
-            $interestsTrimmed;
-            for($i=0; $i < count($interestUntrimmed); $i++){
-                $interestsTrimmed[$i] = trim($interestUntrimmed[$i], " \n\r\t\v\x00,");
-            }
 
 			session_start();
             $email = $_SESSION['email'];
@@ -107,18 +102,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $result = $IDpullstatement->get_result()->fetch_assoc();
             $ID = $result["user_id"];
             //create the profile
-            $query = "UPDATE profile SET Name=?, Gender=?, Description=?,  Date_of_Birth=? WHERE Profile_ID=?";
-            $statement = $conn->prepare($query);
-            $statement->execute([$name, $gender, $description, $dateOfBirth, $ID]);
+            
+            //$a = new Profile($ID, $email, $gender, $name, $dateOfBirth, $description, $interests, $dateOfBirth);
+            console_log("construcor worked");
+            //$query = "UPDATE profile SET Name=?, Gender=?, Description=?,  Date_of_Birth=? WHERE Profile_ID=?";
+            /*$statement = $conn->prepare($profile->getUpdateProfileInDBQuery());
+            $statement->execute();
+            //echo $profile->getUpdateProfileInDBQuery();
 
             //create the profiles intrests
-            $interestsQuery = 'INSERT INTO `profile_interests` (`Profile_ID`, `interest`) VALUES ';
-            $query_parts;
-            for($x=0; $x<count($interestsTrimmed); $x++){
-                $query_parts[] = "('" . $ID . "', '" . $interestsTrimmed[$x] . "')";
-            }
-            $interestsQuery .= implode(',', $query_parts);
-            $interestsStatement = $conn->prepare($interestsQuery);
+            $interestsStatement = $conn->prepare($profile->getInsertIntrestsQuery());
             $interestsStatement->execute();
             
             //create seeking for profile
@@ -129,7 +122,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             $conn = null;
             $statement = null;
-            $IDstatement = null;
+            $IDstatement = null;*/
             header("Location: ../View/loggedIn.php");
         } else {
             echo "Invalid action";
