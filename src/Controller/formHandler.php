@@ -1,4 +1,5 @@
 <?php
+require "../Model/Profile.php";
 
 // Variable to determine if there is currently a user signed in (not currently in use)
 $user_logged;
@@ -101,14 +102,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $IDpullstatement->execute();
             $result = $IDpullstatement->get_result()->fetch_assoc();
             $ID = $result["user_id"];
-            //create the profile
             
-            //$a = new Profile($ID, $email, $gender, $name, $dateOfBirth, $description, $interests, $dateOfBirth);
-            console_log("construcor worked");
-            //$query = "UPDATE profile SET Name=?, Gender=?, Description=?,  Date_of_Birth=? WHERE Profile_ID=?";
-            /*$statement = $conn->prepare($profile->getUpdateProfileInDBQuery());
+            //create the profile
+            $profile = new Profile($ID, $email, $gender, $name, $dateOfBirth, $description, $interests, $dateOfBirth);
+            echo $profile->getUpdateProfileInDBQuery();
+            $statement = $conn->prepare($profile->getUpdateProfileInDBQuery());
             $statement->execute();
-            //echo $profile->getUpdateProfileInDBQuery();
 
             //create the profiles intrests
             $interestsStatement = $conn->prepare($profile->getInsertIntrestsQuery());
@@ -122,7 +121,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             $conn = null;
             $statement = null;
-            $IDstatement = null;*/
+            $IDstatement = null;
             header("Location: ../View/loggedIn.php");
         } else {
             echo "Invalid action";

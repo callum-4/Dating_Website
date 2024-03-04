@@ -11,7 +11,7 @@ class Profile{
     public $bannedUntil;
 
 
-    function __construct(String $id, String $email, String $gender, String $name, $dob, String $description, String $interests, $bannedUntil){
+    function __construct($id, $email, $gender, $name, $dob, $description, $interests, $bannedUntil){
     $this->id = $id;
     $this->email = $email;
     $this->gender = $gender;
@@ -19,7 +19,7 @@ class Profile{
     $this->dob = $dob;
     $this->description = $description;
     $this->interests = $this->createInterestsArray($interests);
-    //$this->bannedUntil = new DateTime('2000-10-10'); //deafult banned until
+    $this->bannedUntil = new DateTime('2000-10-10'); //deafult banned until
     }
 
     
@@ -57,17 +57,8 @@ class Profile{
     }
 
     function getUpdateProfileInDBQuery(){
-        return "UPDATE profile SET Name=$this->name, Gender=$this->gender, Description=$this->description,  Date_of_Birth=$this->dob WHERE Profile_ID=$this->id";
+        return "UPDATE profile SET `Name`='$this->name', `Gender`='$this->gender', `Description`='$this->description',  `Date_of_Birth`='$this->dob' WHERE `Profile_ID`='$this->id'";
     }
-  
 }
-
-$testProfile = new Profile(1, 'qwerty@gmail.com', 'male', 'Roger Shaw','2002-05-10', 'description', 'running', $bannedUntil);
-
-    // used to display test profile details
-  $profileDetails = $testProfile->get_profile();
-  
-  print_r($profileDetails);
-      
 ?>
 
