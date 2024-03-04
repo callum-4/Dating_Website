@@ -1,4 +1,5 @@
 <?php
+require "../Model/Profile.php";
 
 // Variable to determine if there is currently a user signed in (not currently in use)
 $user_logged;
@@ -93,11 +94,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $dateOfBirth = $_POST["dateOfBirth"];
             $interests = $_POST["interests"];
             //break interests up into an array
-            $interestUntrimmed =  preg_split("/\,/", $interests);
-            $interestsTrimmed;
-            for($i=0; $i < count($interestUntrimmed); $i++){
-                $interestsTrimmed[$i] = trim($interestUntrimmed[$i], " \n\r\t\v\x00,");
-            }
 
 			session_start();
             $email = $_SESSION['email'];
@@ -106,19 +102,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $IDpullstatement->execute();
             $result = $IDpullstatement->get_result()->fetch_assoc();
             $ID = $result["user_id"];
+            
             //create the profile
-            $query = "UPDATE profile SET Name=?, Gender=?, Description=?,  Date_of_Birth=? WHERE Profile_ID=?";
-            $statement = $conn->prepare($query);
-            $statement->execute([$name, $gender, $description, $dateOfBirth, $ID]);
+            $profile = new Profile($ID, $email, $gender, $name, $dateOfBirth, $description, $interests, $dateOfBirth);
+            echo $profile->getUpdateProfileInDBQuery();
+            $statement = $conn->prepare($profile->getUpdateProfileInDBQuery());
+            $statement->execute();
 
             //create the profiles intrests
-            $interestsQuery = 'INSERT INTO `profile_interests` (`Profile_ID`, `interest`) VALUES ';
-            $query_parts;
-            for($x=0; $x<count($interestsTrimmed); $x++){
-                $query_parts[] = "('" . $ID . "', '" . $interestsTrimmed[$x] . "')";
-            }
-            $interestsQuery .= implode(',', $query_parts);
-            $interestsStatement = $conn->prepare($interestsQuery);
+            $interestsStatement = $conn->prepare($profile->getInsertIntrestsQuery());
             $interestsStatement->execute();
             
             //create seeking for profile
