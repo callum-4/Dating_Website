@@ -3,6 +3,11 @@
         <body>
             <?php 
                 session_start();
+                $utcTime = $_SESSION['birthInfo']['time'];//stored in db as utc
+                $time = new DateTime($utcTime, new DateTimeZone("utc"));
+                $time->setTimezone(new DateTimeZone('Asia/Tokyo'));//get the japanese time for liberaryarr = strDate.split(':')
+                $jTime = $time->format('H:i');
+
             ?>
             <div id="birthChart"></div>
             <script src="https://unpkg.com/@astrodraw/astrochart@3.0.2/dist/astrochart.js"></script>
@@ -15,15 +20,16 @@
             <script src="../lib/js_astro-master/src/pluto.js"></script>
             <script type="text/javascript">
                 //SOURCE FOR js_astromaster https://github.com/astsakai/js_astro 
-                //TODO: add something manage timezone(lib uses japanes time) and latitude
-                const birthInfo = <?php echo json_encode($_SESSION['birthInfo']); ?>
+                const birthInfo = <?php echo json_encode($_SESSION['birthInfo']); ?>;
+                const birthTime = <?php echo json_encode($jTime); ?>;
+                timeArr = birthTime.split(':')
 
                 const allPlanets = calPlanetPosition2(
                     birthInfo.year, 
                     birthInfo.month,
                     birthInfo.day,
-                    birthInfo.hour,
-                    birthInfo.minute,
+                    timeArr[0],
+                    timeArr[1],
                     birthInfo.longitude,
                     birthInfo.latitude
                 );
@@ -32,8 +38,8 @@
                     birthInfo.year, 
                     birthInfo.month,
                     birthInfo.day,
-                    birthInfo.hour,
-                    birthInfo.minute,
+                    timeArr[0],
+                    timeArr[1],
                     birthInfo.longitude,
                     birthInfo.latitude,
                     1 

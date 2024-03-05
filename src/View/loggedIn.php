@@ -7,8 +7,7 @@
             'year'  => 2000,
             'month' => 11,
             'day' => 22,
-            'hour'  => 11,
-            'minute' => 11,
+            'time' => '11:11',
             'longitude' => 151.2,
             'latitude' => -33.87
         ];
