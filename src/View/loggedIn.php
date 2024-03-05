@@ -3,7 +3,7 @@
         <?php
         session_start();
         $email = $_SESSION['email'];
-        $_SESSION['birthInfo'] = [
+        $_SESSION['birthInfo'] = [//sample data TO BE REMOVED
             'year'  => 2000,
             'month' => 11,
             'day' => 22,
