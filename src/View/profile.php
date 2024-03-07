@@ -8,7 +8,7 @@
     <div class="generalText">
     Time to set up your profile!
     
-    <form method="post" id="profile" action="formHandler.php">
+    <form method="post" id="profile" action="../Controller/formHandler.php">
         <input type="text" name="name" placeholder="Name">
         <br>
         <br>

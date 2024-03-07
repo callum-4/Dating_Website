@@ -9,9 +9,10 @@ class Profile{
     public $description;
     public $interests;
     public $bannedUntil;
+    public $pictures;
 
 
-    function __construct($id, $email, $type, $name, $dob, $description, $interests, $bannedUntil){
+    function __construct($id, $email, $type, $name, $dob, $description, $interests, $bannedUntil, $pictures){
     $this-> id = $id;
     $this-> email = $email;
     $this-> type = $type;
@@ -19,7 +20,8 @@ class Profile{
     $this-> dob = $dob;
     $this-> description = $description;
     $this-> interests = $interests;
-    $this->bannedUntil = new DateTime('2000-10-10'); //deafult banned until
+    $this-> bannedUntil = new DateTime('2000-10-10'); //deafult banned until
+    $this-> pictures = $pictures;
     }
 
     
@@ -33,13 +35,14 @@ class Profile{
             'dob' => $this->dob,
             'description' => $this->description,
             'interests' => $this->interests,
-            'bannedUntil'=> $this->bannedUntil
+            'bannedUntil'=> $this->bannedUntil,
+            'pictures' => $this->pictures
         ];
     }
   
 }
 
-$testProfile = new Profile(1, 'qwerty@gmail.com', 'user', 'Roger Shaw','2002-05-10', 'description', 'running', $bannedUntil);
+$testProfile = new Profile(1, 'qwerty@gmail.com', 'user', 'Roger Shaw','2002-05-10', 'description', 'running', $bannedUntil, $pictures);
 
     // used to display test profile details
   $profileDetails = $testProfile->get_profile();
