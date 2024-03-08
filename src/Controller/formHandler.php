@@ -105,6 +105,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             
             //create the profile
             $profile = new Profile($ID, $email, $gender, $name, $dateOfBirth, $description, $interests, $dateOfBirth);
+            
+            $_SESSION['profile'] = $profile;
             echo $profile->getUpdateProfileInDBQuery();
             $statement = $conn->prepare($profile->getUpdateProfileInDBQuery());
             $statement->execute();
