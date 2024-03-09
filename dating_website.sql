@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 27, 2024 at 04:36 PM
+-- Generation Time: Mar 09, 2024 at 03:50 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -20,6 +20,45 @@ SET time_zone = "+00:00";
 --
 -- Database: `dating website`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ad`
+--
+
+CREATE TABLE `ad` (
+  `id` int(11) NOT NULL,
+  `image` longblob NOT NULL,
+  `text` text NOT NULL,
+  `link` varchar(200) NOT NULL,
+  `owner_email` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ad_reports`
+--
+
+CREATE TABLE `ad_reports` (
+  `reported_ad_id` int(11) NOT NULL,
+  `resolved` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `matchups`
+--
+
+CREATE TABLE `matchups` (
+  `Profile_lower_id` int(11) NOT NULL,
+  `Profile_higher_id` int(11) NOT NULL,
+  `Match_score` int(11) NOT NULL DEFAULT 0,
+  `Match_accepted_lower` int(11) DEFAULT NULL,
+  `Match_accepted_higher` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -75,7 +114,12 @@ INSERT INTO `profile` (`Profile_ID`, `Name`, `Gender`, `Description`, `Date_of_b
 (45, NULL, NULL, NULL, NULL, NULL),
 (46, NULL, NULL, NULL, NULL, NULL),
 (47, 'wreg', 'Male', 'dgfjf', '2024-02-07', NULL),
-(48, 'kfk', 'Male', 'krgkjf', '2024-02-05', NULL);
+(48, 'kfk', 'Male', 'krgkjf', '2024-02-05', NULL),
+(49, 'fh', 'Male', 'dhdgfh', '2024-02-09', NULL),
+(50, NULL, NULL, NULL, NULL, NULL),
+(51, NULL, NULL, NULL, NULL, NULL),
+(52, 'df', 'Male', 'sdfg', '2024-03-13', NULL),
+(53, 'bfd', 'Male', 'gsdfgdfs', '2024-03-12', NULL);
 
 -- --------------------------------------------------------
 
@@ -128,7 +172,33 @@ INSERT INTO `profile_interests` (`Profile_ID`, `interest`) VALUES
 (48, 's'),
 (48, 'f'),
 (48, 'y'),
-(48, 'g');
+(48, 'g'),
+(49, 'dfh'),
+(49, 'kk'),
+(49, 'ssa'),
+(52, 'a'),
+(52, 'f'),
+(52, 'g'),
+(52, 'e'),
+(52, 'x'),
+(52, 'g'),
+(52, ''),
+(53, 'a'),
+(53, 'f'),
+(53, 'g'),
+(53, 'sf'),
+(53, 'a');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `profile_reports`
+--
+
+CREATE TABLE `profile_reports` (
+  `reported_profile_id` int(11) NOT NULL,
+  `resolved` tinyint(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -148,7 +218,10 @@ CREATE TABLE `seeking` (
 --
 
 INSERT INTO `seeking` (`Profile_ID`, `Gender`, `Max_Age`, `Min_Age`) VALUES
-(48, 'Women', 150, 18);
+(48, 'Women', 150, 18),
+(49, 'No preference', 150, 18),
+(52, 'Men', 150, 18),
+(53, 'Men', 150, 18);
 
 -- --------------------------------------------------------
 
@@ -206,11 +279,35 @@ INSERT INTO `users` (`user_ID`, `Email`, `Password`) VALUES
 (45, 'e@2', '1'),
 (46, 'e@3', '1'),
 (47, 'e@4', '1'),
-(48, 'e@5', '1');
+(48, 'e@5', '1'),
+(49, 'w@7', '1'),
+(50, 'r@1', '1'),
+(51, 't@1', '1'),
+(52, 't@2', '1'),
+(53, 't@3', '1');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `ad`
+--
+ALTER TABLE `ad`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `ad_reports`
+--
+ALTER TABLE `ad_reports`
+  ADD KEY `FK_add_id` (`reported_ad_id`);
+
+--
+-- Indexes for table `matchups`
+--
+ALTER TABLE `matchups`
+  ADD PRIMARY KEY (`Profile_lower_id`,`Profile_higher_id`),
+  ADD KEY `matchups_ibfk_2` (`Profile_higher_id`);
 
 --
 -- Indexes for table `profile`
@@ -223,6 +320,12 @@ ALTER TABLE `profile`
 --
 ALTER TABLE `profile_interests`
   ADD KEY `Profile_ID` (`Profile_ID`);
+
+--
+-- Indexes for table `profile_reports`
+--
+ALTER TABLE `profile_reports`
+  ADD KEY `FK_reported_profile` (`reported_profile_id`);
 
 --
 -- Indexes for table `seeking`
@@ -242,27 +345,51 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `ad`
+--
+ALTER TABLE `ad`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `user_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- Constraints for dumped tables
 --
 
 --
+-- Constraints for table `ad_reports`
+--
+ALTER TABLE `ad_reports`
+  ADD CONSTRAINT `FK_add_id` FOREIGN KEY (`reported_ad_id`) REFERENCES `ad` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `matchups`
+--
+ALTER TABLE `matchups`
+  ADD CONSTRAINT `matchups_ibfk_1` FOREIGN KEY (`Profile_lower_id`) REFERENCES `profile` (`Profile_ID`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  ADD CONSTRAINT `matchups_ibfk_2` FOREIGN KEY (`Profile_higher_id`) REFERENCES `profile` (`Profile_ID`) ON DELETE CASCADE ON UPDATE NO ACTION;
+
+--
 -- Constraints for table `profile`
 --
 ALTER TABLE `profile`
-  ADD CONSTRAINT `FK_profile_id` FOREIGN KEY (`Profile_ID`) REFERENCES `users` (`user_ID`),
-  ADD CONSTRAINT `fk_profile_and_user_id` FOREIGN KEY (`Profile_ID`) REFERENCES `users` (`user_ID`);
+  ADD CONSTRAINT `FK_profile_id` FOREIGN KEY (`Profile_ID`) REFERENCES `users` (`user_ID`);
 
 --
 -- Constraints for table `profile_interests`
 --
 ALTER TABLE `profile_interests`
   ADD CONSTRAINT `FK_profile_id_intrests` FOREIGN KEY (`Profile_ID`) REFERENCES `users` (`user_ID`);
+
+--
+-- Constraints for table `profile_reports`
+--
+ALTER TABLE `profile_reports`
+  ADD CONSTRAINT `FK_reported_profile` FOREIGN KEY (`reported_profile_id`) REFERENCES `profile` (`Profile_ID`);
 
 --
 -- Constraints for table `seeking`
