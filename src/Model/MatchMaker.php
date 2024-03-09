@@ -22,5 +22,7 @@ class MatchMaker{
         return $SIGN_MATCH_SCORES[$signsPair];
     }
 
-    
+    /*public function generatePotentialMatches(Profile $profile, Seeking $seeking){
+        
+    }*/
 }
