@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 09, 2024 at 03:50 PM
+-- Generation Time: Mar 09, 2024 at 04:36 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -71,55 +71,57 @@ CREATE TABLE `profile` (
   `Name` varchar(50) DEFAULT NULL,
   `Gender` varchar(10) DEFAULT NULL,
   `Description` text DEFAULT NULL,
-  `Date_of_birth` date DEFAULT NULL,
-  `Banned_until` date DEFAULT NULL
+  `Datetime_of_birth` datetime DEFAULT NULL,
+  `Banned_until` date DEFAULT NULL,
+  `latitude_of_birth` float DEFAULT NULL,
+  `longitude_of_birth` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `profile`
 --
 
-INSERT INTO `profile` (`Profile_ID`, `Name`, `Gender`, `Description`, `Date_of_birth`, `Banned_until`) VALUES
-(9, '', '', '', NULL, NULL),
-(10, '', '', '', NULL, NULL),
-(11, '', '', '', NULL, NULL),
-(12, '', '', '', NULL, NULL),
-(13, '', '', '', NULL, NULL),
-(14, '', '', '', NULL, NULL),
-(15, '', '', '', NULL, NULL),
-(16, '', '', '', NULL, NULL),
-(17, '', '', '', NULL, NULL),
-(18, '', '', '', NULL, NULL),
-(19, '', '', '', NULL, NULL),
-(20, 'joey', 'Male', 'cool cool cool cool cool cool cool cool ', NULL, NULL),
-(21, 'Sam', 'Male', 'sam sam sam sam sam sam sam sam sam ', NULL, NULL),
-(22, '', '', '', NULL, NULL),
-(28, NULL, NULL, NULL, NULL, NULL),
-(29, NULL, NULL, NULL, NULL, NULL),
-(30, NULL, NULL, NULL, NULL, NULL),
-(31, NULL, NULL, NULL, NULL, NULL),
-(32, 're', 'Male', '', '2024-02-06', NULL),
-(33, 'a', 'Male', '', '2024-02-05', NULL),
-(34, 'df', 'Male', '', '2024-02-06', NULL),
-(35, 'dfvs', 'Male', '', '2024-02-07', NULL),
-(36, 'f', 'Male', 'df', '2024-02-14', NULL),
-(37, 'fv', 'Male', '', '2024-02-05', NULL),
-(38, 'd', 'Male', '', '2024-02-05', NULL),
-(39, 'YIPPIEEE', 'Male', 'hi', '2024-02-14', NULL),
-(40, 'keke', 'Male', 'discription', '2024-02-08', NULL),
-(41, 'fe', 'Male', 'bvmkdfosnvipdfs', '2024-02-01', NULL),
-(42, 'mjklf', 'Male', '', '2024-01-08', NULL),
-(43, 'a', 'Male', 'ewfawf', '2024-02-14', NULL),
-(44, NULL, NULL, NULL, NULL, NULL),
-(45, NULL, NULL, NULL, NULL, NULL),
-(46, NULL, NULL, NULL, NULL, NULL),
-(47, 'wreg', 'Male', 'dgfjf', '2024-02-07', NULL),
-(48, 'kfk', 'Male', 'krgkjf', '2024-02-05', NULL),
-(49, 'fh', 'Male', 'dhdgfh', '2024-02-09', NULL),
-(50, NULL, NULL, NULL, NULL, NULL),
-(51, NULL, NULL, NULL, NULL, NULL),
-(52, 'df', 'Male', 'sdfg', '2024-03-13', NULL),
-(53, 'bfd', 'Male', 'gsdfgdfs', '2024-03-12', NULL);
+INSERT INTO `profile` (`Profile_ID`, `Name`, `Gender`, `Description`, `Datetime_of_birth`, `Banned_until`, `latitude_of_birth`, `longitude_of_birth`) VALUES
+(9, '', '', '', NULL, NULL, 0, 0),
+(10, '', '', '', NULL, NULL, 0, 0),
+(11, '', '', '', NULL, NULL, 0, 0),
+(12, '', '', '', NULL, NULL, 0, 0),
+(13, '', '', '', NULL, NULL, 0, 0),
+(14, '', '', '', NULL, NULL, 0, 0),
+(15, '', '', '', NULL, NULL, 0, 0),
+(16, '', '', '', NULL, NULL, 0, 0),
+(17, '', '', '', NULL, NULL, 0, 0),
+(18, '', '', '', NULL, NULL, 0, 0),
+(19, '', '', '', NULL, NULL, 0, 0),
+(20, 'joey', 'Male', 'cool cool cool cool cool cool cool cool ', NULL, NULL, 0, 0),
+(21, 'Sam', 'Male', 'sam sam sam sam sam sam sam sam sam ', NULL, NULL, 0, 0),
+(22, '', '', '', NULL, NULL, 0, 0),
+(28, NULL, NULL, NULL, NULL, NULL, 0, 0),
+(29, NULL, NULL, NULL, NULL, NULL, 0, 0),
+(30, NULL, NULL, NULL, NULL, NULL, 0, 0),
+(31, NULL, NULL, NULL, NULL, NULL, 0, 0),
+(32, 're', 'Male', '', '2024-02-06 00:00:00', NULL, 0, 0),
+(33, 'a', 'Male', '', '2024-02-05 00:00:00', NULL, 0, 0),
+(34, 'df', 'Male', '', '2024-02-06 00:00:00', NULL, 0, 0),
+(35, 'dfvs', 'Male', '', '2024-02-07 00:00:00', NULL, 0, 0),
+(36, 'f', 'Male', 'df', '2024-02-14 00:00:00', NULL, 0, 0),
+(37, 'fv', 'Male', '', '2024-02-05 00:00:00', NULL, 0, 0),
+(38, 'd', 'Male', '', '2024-02-05 00:00:00', NULL, 0, 0),
+(39, 'YIPPIEEE', 'Male', 'hi', '2024-02-14 00:00:00', NULL, 0, 0),
+(40, 'keke', 'Male', 'discription', '2024-02-08 00:00:00', NULL, 0, 0),
+(41, 'fe', 'Male', 'bvmkdfosnvipdfs', '2024-02-01 00:00:00', NULL, 0, 0),
+(42, 'mjklf', 'Male', '', '2024-01-08 00:00:00', NULL, 0, 0),
+(43, 'a', 'Male', 'ewfawf', '2024-02-14 00:00:00', NULL, 0, 0),
+(44, NULL, NULL, NULL, NULL, NULL, 0, 0),
+(45, NULL, NULL, NULL, NULL, NULL, 0, 0),
+(46, NULL, NULL, NULL, NULL, NULL, 0, 0),
+(47, 'wreg', 'Male', 'dgfjf', '2024-02-07 00:00:00', NULL, 0, 0),
+(48, 'kfk', 'Male', 'krgkjf', '2024-02-05 00:00:00', NULL, 0, 0),
+(49, 'fh', 'Male', 'dhdgfh', '2024-02-09 00:00:00', NULL, 0, 0),
+(50, NULL, NULL, NULL, NULL, NULL, 0, 0),
+(51, NULL, NULL, NULL, NULL, NULL, 0, 0),
+(52, 'df', 'Male', 'sdfg', '2024-03-13 00:00:00', NULL, 0, 0),
+(53, 'bfd', 'Male', 'gsdfgdfs', '2024-03-12 00:00:00', NULL, 0, 0);
 
 -- --------------------------------------------------------
 
