@@ -47,7 +47,7 @@ class Profile{
     }
 
     function getInsertIntrestsQuery(){
-        $interestsQuery = 'INSERT INTO `profile_interests` (`Profile_ID`, `interest`) VALUES ';
+        $interestsQuery = 'INSERT INTO `profile_interest` (`profile_id`, `interest`) VALUES ';
         $query_parts = array();
         for($x=0; $x<count($this->interests); $x++){
             $query_parts[] = "('" . $this->id . "', '" . $this->interests[$x] . "')";
@@ -57,7 +57,7 @@ class Profile{
     }
 
     function getUpdateProfileInDBQuery(){
-        return "UPDATE profile SET `Name`='$this->name', `Gender`='$this->gender', `Description`='$this->description',  `Date_of_Birth`='$this->dob' WHERE `Profile_ID`='$this->id'";
+        return "UPDATE profile SET `name`='$this->name', `gender`='$this->gender', `description`='$this->description',  `datetime_of_birth`='$this->dob' WHERE `id`='$this->id'";
     }
 }
 ?>
