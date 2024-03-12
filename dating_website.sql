@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 12, 2024 at 05:29 PM
+-- Generation Time: Mar 12, 2024 at 05:49 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -48,10 +48,10 @@ CREATE TABLE `admin` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ad_reports`
+-- Table structure for table `ad_report`
 --
 
-CREATE TABLE `ad_reports` (
+CREATE TABLE `ad_report` (
   `reported_ad_id` int(11) NOT NULL,
   `resolved` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -112,7 +112,6 @@ CREATE TABLE `profile` (
   `latitude_of_birth` float DEFAULT NULL,
   `longitude_of_birth` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
 -- --------------------------------------------------------
 
 --
@@ -147,7 +146,6 @@ CREATE TABLE `seeking` (
   `max_age` int(11) NOT NULL DEFAULT 150,
   `min_age` int(11) NOT NULL DEFAULT 18
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
 -- --------------------------------------------------------
 
 --
@@ -177,9 +175,9 @@ ALTER TABLE `admin`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `ad_reports`
+-- Indexes for table `ad_report`
 --
-ALTER TABLE `ad_reports`
+ALTER TABLE `ad_report`
   ADD KEY `FK_add_id` (`reported_ad_id`);
 
 --
@@ -261,7 +259,7 @@ ALTER TABLE `picture`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- Constraints for dumped tables
@@ -274,9 +272,9 @@ ALTER TABLE `admin`
   ADD CONSTRAINT `FK_admin_user` FOREIGN KEY (`id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
--- Constraints for table `ad_reports`
+-- Constraints for table `ad_report`
 --
-ALTER TABLE `ad_reports`
+ALTER TABLE `ad_report`
   ADD CONSTRAINT `FK_add_id` FOREIGN KEY (`reported_ad_id`) REFERENCES `ad` (`id`) ON UPDATE NO ACTION;
 
 --
