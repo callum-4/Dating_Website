@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         if ($action === "signUp") {
             $email = $_POST["email"];
-            $password = $_POST["password"];
+            $password = password_hash($_POST["password"],PASSWORD_DEFAULT);
 
             if (uniqueEmail($email, $conn)) {
                 $query = "INSERT INTO user (email, password) VALUES (?,?);";
@@ -55,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $result = mysqli_query($conn, $query);
                 $fetched_user = mysqli_fetch_array($result);
 
-                if ($password == $fetched_user["password"]) {
+                if (password_verify($password, $fetched_user["password"])) {
                     echo "Signed in";
                     $user_logged = TRUE;
                     session_start();
@@ -75,7 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $result = mysqli_query($conn, $query);
                     $fetched_user = mysqli_fetch_array($result);
 
-                    if ($password == $fetched_user["password"]) {
+                    if (password_verify($password, $fetched_user["password"])) {
                         echo "Signed in";
                         $user_logged = TRUE;
                         session_start();
