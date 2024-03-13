@@ -4,16 +4,23 @@
     <link href="./style.css" rel="stylesheet">
 </head>
 <body>
-<div class="box-container">
-        <div class="box">
-            <h1>Astrology-Inspired Matchmaking for Everyone</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 d-flex">
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="card-title">Welcome to Astrolove</h1>
+                    <p class="card-text">Astrology-Inspired Matchmaking for Everyone</p>
+                </div>
+            </div>
+            <div class="card mt-3">
+                <div class="card-body">
+                    <p class="card-text">Find Your Celestial Match Today.</p>
+                    <p class="card-text">Connecting Star-Crossed Souls: Let Cosmic Compatibility Guide Your Love Journey</p>
+                </div>
+            </div>
         </div>
-        
-        <div class="box2">
-            <p>Find Your Celestial Match Today.</p>
-            <p>Connecting Star-Crossed Souls: Let Cosmic Compatibility Guide Your Love Journey</p>
-        </div>
-    </div>
  <?php
 	try{
         $conn = mysqli_connect("localhost", "callum", "test123","dating website");
@@ -26,35 +33,38 @@
         error_log("Error: ". $e->getMessage());
     } 
 	?> 
-<div class="formHolderSignUp" >
-    <br>
-    <form method="post" id="signUp" action="./Controller/formHandler.php">
-    <div class="generalText">
-    Sign up:
+<div class="col-lg-6">
+            <div class="formHolderSignup">
+                <h2>Sign Up</h2>
+                <form method="post" id="signUp" action="./Controller/formHandler.php">
+                    <div class="mb-3">
+                        <input type="email" class="form-control" name="email" placeholder="Email">
+                    </div>
+                    <div class="mb-3">
+                        <input type="password" class="form-control" name="password" placeholder="Password">
+                    </div>
+                    <input type="hidden" name="action" value="signUp">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+
+            <div class="formHolderLogin">
+                <h2>Login</h2>
+                <form method="post" id="Login" action="./Controller/formHandler.php">
+                    <div class="mb-3">
+                        <input type="email" class="form-control" name="email" placeholder="Email">
+                    </div>
+                    <div class="mb-3">
+                        <input type="password" class="form-control" name="password" placeholder="Password">
+                    </div>
+                    <input type="hidden" name="action" value="Login">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
     </div>
-    <input type="email" name="email" placeholder="Email">
-    <br>
-    <input type="password" name="password" placeholder="Password">
-    <input type="hidden" name="action" value="signUp">
-    <br>
-    <input type="submit" value="Submit">
-    </form>
 </div>
-
-    <div class="formHolderLogin" >
-
-    <form method ="post" id="Login" action="./Controller/formHandler.php">
-    <div class="generalText">
-    Login:
-    </div>
-    <input type="email" name="email" placeholder="Email">
-    <br>
-    <input type="password" name="password" placeholder="Password">
-    <input type="hidden" name="action" value="Login">
-    <br>
-    <input type="submit" value="Submit">
-    </form>
 </div>
-
 </body>
 </html>
+

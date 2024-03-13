@@ -2,7 +2,6 @@
     <div class="generalText">
         <body>
             <?php 
-                session_start();
                 $utcTime = $_SESSION['birthInfo']['time'];//stored in db as utc
                 $time = new DateTime($utcTime, new DateTimeZone("utc"));
                 $time->setTimezone(new DateTimeZone('Asia/Tokyo'));//get the japanese time for liberaryarr = strDate.split(':')

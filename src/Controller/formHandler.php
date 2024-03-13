@@ -6,7 +6,7 @@ $user_logged;
 
 // Function to check if an email is unique when creating an account
 function uniqueEmail($email, $mysqli) {
-    $stmt = $mysqli->prepare("SELECT Email FROM users WHERE email = ?");
+    $stmt = $mysqli->prepare("SELECT Email FROM users WHERE Email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $stmt->store_result();
