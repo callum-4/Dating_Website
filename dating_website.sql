@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 11, 2024 at 06:38 PM
+-- Generation Time: Mar 12, 2024 at 05:49 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -38,10 +38,20 @@ CREATE TABLE `ad` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ad_reports`
+-- Table structure for table `admin`
 --
 
-CREATE TABLE `ad_reports` (
+CREATE TABLE `admin` (
+  `id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ad_report`
+--
+
+CREATE TABLE `ad_report` (
   `reported_ad_id` int(11) NOT NULL,
   `resolved` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -49,15 +59,15 @@ CREATE TABLE `ad_reports` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `matchups`
+-- Table structure for table `matchup`
 --
 
-CREATE TABLE `matchups` (
-  `Profile_lower_id` int(11) NOT NULL,
-  `Profile_higher_id` int(11) NOT NULL,
-  `Match_score` int(11) NOT NULL DEFAULT 0,
-  `Match_accepted_lower` int(11) DEFAULT NULL,
-  `Match_accepted_higher` int(11) DEFAULT NULL
+CREATE TABLE `matchup` (
+  `profile_lower_id` int(11) NOT NULL,
+  `profile_higher_id` int(11) NOT NULL,
+  `match_score` int(11) NOT NULL DEFAULT 0,
+  `match_accepted_lower` tinyint(1) DEFAULT NULL,
+  `match_accepted_higher` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -77,12 +87,12 @@ CREATE TABLE `message` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pictures`
+-- Table structure for table `picture`
 --
 
-CREATE TABLE `pictures` (
-  `picture_id` int(11) NOT NULL,
-  `Profile_ID` int(11) NOT NULL,
+CREATE TABLE `picture` (
+  `id` int(11) NOT NULL,
+  `profile_id` int(11) NOT NULL,
   `picture` longblob NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -93,139 +103,35 @@ CREATE TABLE `pictures` (
 --
 
 CREATE TABLE `profile` (
-  `Profile_ID` int(11) NOT NULL,
-  `Name` varchar(50) DEFAULT NULL,
-  `Gender` varchar(10) DEFAULT NULL,
-  `Description` text DEFAULT NULL,
-  `Datetime_of_birth` datetime DEFAULT NULL,
-  `Banned_until` date DEFAULT NULL,
+  `id` int(11) NOT NULL,
+  `name` varchar(50) DEFAULT NULL,
+  `gender` varchar(10) DEFAULT NULL,
+  `description` text DEFAULT NULL,
+  `datetime_of_birth` datetime DEFAULT NULL,
+  `banned_until` date DEFAULT NULL,
   `latitude_of_birth` float DEFAULT NULL,
   `longitude_of_birth` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `profile`
---
-
-INSERT INTO `profile` (`Profile_ID`, `Name`, `Gender`, `Description`, `Datetime_of_birth`, `Banned_until`, `latitude_of_birth`, `longitude_of_birth`) VALUES
-(9, '', '', '', NULL, NULL, 0, 0),
-(10, '', '', '', NULL, NULL, 0, 0),
-(11, '', '', '', NULL, NULL, 0, 0),
-(12, '', '', '', NULL, NULL, 0, 0),
-(13, '', '', '', NULL, NULL, 0, 0),
-(14, '', '', '', NULL, NULL, 0, 0),
-(15, '', '', '', NULL, NULL, 0, 0),
-(16, '', '', '', NULL, NULL, 0, 0),
-(17, '', '', '', NULL, NULL, 0, 0),
-(18, '', '', '', NULL, NULL, 0, 0),
-(19, '', '', '', NULL, NULL, 0, 0),
-(20, 'joey', 'Male', 'cool cool cool cool cool cool cool cool ', NULL, NULL, 0, 0),
-(21, 'Sam', 'Male', 'sam sam sam sam sam sam sam sam sam ', NULL, NULL, 0, 0),
-(22, '', '', '', NULL, NULL, 0, 0),
-(28, NULL, NULL, NULL, NULL, NULL, 0, 0),
-(29, NULL, NULL, NULL, NULL, NULL, 0, 0),
-(30, NULL, NULL, NULL, NULL, NULL, 0, 0),
-(31, NULL, NULL, NULL, NULL, NULL, 0, 0),
-(32, 're', 'Male', '', '2024-02-06 00:00:00', NULL, 0, 0),
-(33, 'a', 'Male', '', '2024-02-05 00:00:00', NULL, 0, 0),
-(34, 'df', 'Male', '', '2024-02-06 00:00:00', NULL, 0, 0),
-(35, 'dfvs', 'Male', '', '2024-02-07 00:00:00', NULL, 0, 0),
-(36, 'f', 'Male', 'df', '2024-02-14 00:00:00', NULL, 0, 0),
-(37, 'fv', 'Male', '', '2024-02-05 00:00:00', NULL, 0, 0),
-(38, 'd', 'Male', '', '2024-02-05 00:00:00', NULL, 0, 0),
-(39, 'YIPPIEEE', 'Male', 'hi', '2024-02-14 00:00:00', NULL, 0, 0),
-(40, 'keke', 'Male', 'discription', '2024-02-08 00:00:00', NULL, 0, 0),
-(41, 'fe', 'Male', 'bvmkdfosnvipdfs', '2024-02-01 00:00:00', NULL, 0, 0),
-(42, 'mjklf', 'Male', '', '2024-01-08 00:00:00', NULL, 0, 0),
-(43, 'a', 'Male', 'ewfawf', '2024-02-14 00:00:00', NULL, 0, 0),
-(44, NULL, NULL, NULL, NULL, NULL, 0, 0),
-(45, NULL, NULL, NULL, NULL, NULL, 0, 0),
-(46, NULL, NULL, NULL, NULL, NULL, 0, 0),
-(47, 'wreg', 'Male', 'dgfjf', '2024-02-07 00:00:00', NULL, 0, 0),
-(48, 'kfk', 'Male', 'krgkjf', '2024-02-05 00:00:00', NULL, 0, 0),
-(49, 'fh', 'Male', 'dhdgfh', '2024-02-09 00:00:00', NULL, 0, 0),
-(50, NULL, NULL, NULL, NULL, NULL, 0, 0),
-(51, NULL, NULL, NULL, NULL, NULL, 0, 0),
-(52, 'df', 'Male', 'sdfg', '2024-03-13 00:00:00', NULL, 0, 0),
-(53, 'bfd', 'Male', 'gsdfgdfs', '2024-03-12 00:00:00', NULL, 0, 0);
-
 -- --------------------------------------------------------
 
 --
--- Table structure for table `profile_interests`
+-- Table structure for table `profile_interest`
 --
 
-CREATE TABLE `profile_interests` (
-  `Profile_ID` int(11) NOT NULL,
+CREATE TABLE `profile_interest` (
+  `profile_id` int(11) NOT NULL,
   `interest` varchar(30) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `profile_interests`
---
-
-INSERT INTO `profile_interests` (`Profile_ID`, `interest`) VALUES
-(38, 'q'),
-(38, 'swa boow'),
-(38, 'd'),
-(38, 'f'),
-(39, 'axe throwing'),
-(39, 'cooking'),
-(39, 'running'),
-(40, 'a'),
-(40, 'b'),
-(40, 'c'),
-(42, 'a'),
-(42, 'g'),
-(42, 'j'),
-(42, 'd'),
-(43, 'a'),
-(43, 'f'),
-(43, 'h'),
-(43, 'r'),
-(43, 's'),
-(43, 's'),
-(47, 'a'),
-(47, 'b'),
-(47, 'c'),
-(47, 'a'),
-(47, 'b'),
-(47, 'c'),
-(48, '1'),
-(48, 's'),
-(48, 'f'),
-(48, 'y'),
-(48, 'g'),
-(48, '1'),
-(48, 's'),
-(48, 'f'),
-(48, 'y'),
-(48, 'g'),
-(49, 'dfh'),
-(49, 'kk'),
-(49, 'ssa'),
-(52, 'a'),
-(52, 'f'),
-(52, 'g'),
-(52, 'e'),
-(52, 'x'),
-(52, 'g'),
-(52, ''),
-(53, 'a'),
-(53, 'f'),
-(53, 'g'),
-(53, 'sf'),
-(53, 'a');
-
 -- --------------------------------------------------------
 
 --
--- Table structure for table `profile_reports`
+-- Table structure for table `profile_report`
 --
 
-CREATE TABLE `profile_reports` (
+CREATE TABLE `profile_report` (
   `reported_profile_id` int(11) NOT NULL,
-  `resolved` tinyint(1) DEFAULT NULL
+  `resolved` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -235,84 +141,22 @@ CREATE TABLE `profile_reports` (
 --
 
 CREATE TABLE `seeking` (
-  `Profile_ID` int(11) NOT NULL,
-  `Gender` varchar(13) DEFAULT NULL,
-  `Max_Age` int(11) NOT NULL DEFAULT 150,
-  `Min_Age` int(11) NOT NULL DEFAULT 18
+  `id` int(11) NOT NULL,
+  `gender` varchar(13) DEFAULT NULL,
+  `max_age` int(11) NOT NULL DEFAULT 150,
+  `min_age` int(11) NOT NULL DEFAULT 18
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `seeking`
---
-
-INSERT INTO `seeking` (`Profile_ID`, `Gender`, `Max_Age`, `Min_Age`) VALUES
-(48, 'Women', 150, 18),
-(49, 'No preference', 150, 18),
-(52, 'Men', 150, 18),
-(53, 'Men', 150, 18);
-
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Table structure for table `user`
 --
 
-CREATE TABLE `users` (
-  `user_ID` int(11) NOT NULL,
-  `Email` varchar(50) NOT NULL,
-  `Password` varchar(20) NOT NULL
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `password` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`user_ID`, `Email`, `Password`) VALUES
-(9, 'brendan@gmail.com', 'password'),
-(10, 'joe@gmail.com', 'password'),
-(11, 'mark@gmail.com', 'password'),
-(12, 'frank@gmail.com', 'password'),
-(13, 'gem@gmail.com', 'password'),
-(14, 'fern@gmail.com', 'password'),
-(15, 'callum@gmail.com', 'password'),
-(16, 'jadgsfg@gmail.com', 'password'),
-(17, 'joever@gmail.com', 'password'),
-(18, 'lashgf@gmail.com', 'password'),
-(19, 'joseph@gmail.com', 'password'),
-(20, 'joey@gmail.com', 'password'),
-(21, 'sam@gmail.com', 'password'),
-(22, 'qeufhda@gmail.com', 'password'),
-(23, 'a@b', '1234'),
-(24, 'b@a', '1'),
-(25, 'a@l', '1'),
-(26, 'q@g', '1'),
-(27, '1@2', '1'),
-(28, 'q@a', '1'),
-(29, 'q@1', '1'),
-(30, 'q@2', '1'),
-(31, 'q@3', '1'),
-(32, 'q@4', '1'),
-(33, 'q@5', '1'),
-(34, 'q@6', '1'),
-(35, 'q@7', '1'),
-(36, 'q@8', '1'),
-(37, 'q@9', '1'),
-(38, 'w@1', '1'),
-(39, 'w@2', '1'),
-(40, 'w@3', '1'),
-(41, 'w@4', '1'),
-(42, 'w@5', '1'),
-(43, 'w@6', '1'),
-(44, 'e@1', '1'),
-(45, 'e@2', '1'),
-(46, 'e@3', '1'),
-(47, 'e@4', '1'),
-(48, 'e@5', '1'),
-(49, 'w@7', '1'),
-(50, 'r@1', '1'),
-(51, 't@1', '1'),
-(52, 't@2', '1'),
-(53, 't@3', '1');
 
 --
 -- Indexes for dumped tables
@@ -325,63 +169,69 @@ ALTER TABLE `ad`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `ad_reports`
+-- Indexes for table `admin`
 --
-ALTER TABLE `ad_reports`
+ALTER TABLE `admin`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `ad_report`
+--
+ALTER TABLE `ad_report`
   ADD KEY `FK_add_id` (`reported_ad_id`);
 
 --
--- Indexes for table `matchups`
+-- Indexes for table `matchup`
 --
-ALTER TABLE `matchups`
-  ADD PRIMARY KEY (`Profile_lower_id`,`Profile_higher_id`),
-  ADD KEY `matchups_ibfk_2` (`Profile_higher_id`);
+ALTER TABLE `matchup`
+  ADD PRIMARY KEY (`profile_lower_id`,`profile_higher_id`),
+  ADD KEY `FK_higher_id` (`profile_higher_id`);
 
 --
 -- Indexes for table `message`
 --
 ALTER TABLE `message`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `FK_message_matchup` (`matchup_lower_profile_id`,`matchup_higher_profile_id`),
-  ADD KEY `FK_message_sender_id` (`sender_id`);
+  ADD KEY `FK_message_sender_id` (`sender_id`),
+  ADD KEY `FK_message_matchup` (`matchup_lower_profile_id`,`matchup_higher_profile_id`);
 
 --
--- Indexes for table `pictures`
+-- Indexes for table `picture`
 --
-ALTER TABLE `pictures`
-  ADD PRIMARY KEY (`picture_id`),
-  ADD KEY `FK_profile_id_picture` (`Profile_ID`);
+ALTER TABLE `picture`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FK_profile_id_picture` (`profile_id`);
 
 --
 -- Indexes for table `profile`
 --
 ALTER TABLE `profile`
-  ADD PRIMARY KEY (`Profile_ID`);
+  ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `profile_interests`
+-- Indexes for table `profile_interest`
 --
-ALTER TABLE `profile_interests`
-  ADD KEY `Profile_ID` (`Profile_ID`);
+ALTER TABLE `profile_interest`
+  ADD KEY `Profile_ID` (`profile_id`);
 
 --
--- Indexes for table `profile_reports`
+-- Indexes for table `profile_report`
 --
-ALTER TABLE `profile_reports`
+ALTER TABLE `profile_report`
   ADD KEY `FK_reported_profile` (`reported_profile_id`);
 
 --
 -- Indexes for table `seeking`
 --
 ALTER TABLE `seeking`
-  ADD UNIQUE KEY `Profile_ID` (`Profile_ID`);
+  ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `users`
+-- Indexes for table `user`
 --
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`user_ID`),
-  ADD UNIQUE KEY `user_ID` (`user_ID`);
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `user_ID` (`id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -400,70 +250,76 @@ ALTER TABLE `message`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `pictures`
+-- AUTO_INCREMENT for table `picture`
 --
-ALTER TABLE `pictures`
-  MODIFY `picture_id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `picture`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT for table `user`
 --
-ALTER TABLE `users`
-  MODIFY `user_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+ALTER TABLE `user`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `ad_reports`
+-- Constraints for table `admin`
 --
-ALTER TABLE `ad_reports`
-  ADD CONSTRAINT `FK_add_id` FOREIGN KEY (`reported_ad_id`) REFERENCES `ad` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+ALTER TABLE `admin`
+  ADD CONSTRAINT `FK_admin_user` FOREIGN KEY (`id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
--- Constraints for table `matchups`
+-- Constraints for table `ad_report`
 --
-ALTER TABLE `matchups`
-  ADD CONSTRAINT `matchups_ibfk_1` FOREIGN KEY (`Profile_lower_id`) REFERENCES `profile` (`Profile_ID`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  ADD CONSTRAINT `matchups_ibfk_2` FOREIGN KEY (`Profile_higher_id`) REFERENCES `profile` (`Profile_ID`) ON DELETE CASCADE ON UPDATE NO ACTION;
+ALTER TABLE `ad_report`
+  ADD CONSTRAINT `FK_add_id` FOREIGN KEY (`reported_ad_id`) REFERENCES `ad` (`id`) ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `matchup`
+--
+ALTER TABLE `matchup`
+  ADD CONSTRAINT `FK_higher_id` FOREIGN KEY (`profile_higher_id`) REFERENCES `profile` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `FK_lower_id` FOREIGN KEY (`profile_lower_id`) REFERENCES `profile` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `message`
 --
 ALTER TABLE `message`
-  ADD CONSTRAINT `FK_message_matchup` FOREIGN KEY (`matchup_lower_profile_id`,`matchup_higher_profile_id`) REFERENCES `matchups` (`Profile_lower_id`, `Profile_higher_id`),
-  ADD CONSTRAINT `FK_message_sender_id` FOREIGN KEY (`sender_id`) REFERENCES `profile` (`Profile_ID`) ON DELETE CASCADE ON UPDATE NO ACTION;
+  ADD CONSTRAINT `FK_message_matchup` FOREIGN KEY (`matchup_lower_profile_id`,`matchup_higher_profile_id`) REFERENCES `matchup` (`Profile_lower_id`, `Profile_higher_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `FK_message_sender_id` FOREIGN KEY (`sender_id`) REFERENCES `profile` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
--- Constraints for table `pictures`
+-- Constraints for table `picture`
 --
-ALTER TABLE `pictures`
-  ADD CONSTRAINT `FK_profile_id_picture` FOREIGN KEY (`Profile_ID`) REFERENCES `profile` (`Profile_ID`) ON DELETE CASCADE ON UPDATE NO ACTION;
+ALTER TABLE `picture`
+  ADD CONSTRAINT `FK_profile_id_picture` FOREIGN KEY (`profile_id`) REFERENCES `profile` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `profile`
 --
 ALTER TABLE `profile`
-  ADD CONSTRAINT `FK_profile_id` FOREIGN KEY (`Profile_ID`) REFERENCES `users` (`user_ID`);
+  ADD CONSTRAINT `FK_profile_id` FOREIGN KEY (`id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
--- Constraints for table `profile_interests`
+-- Constraints for table `profile_interest`
 --
-ALTER TABLE `profile_interests`
-  ADD CONSTRAINT `FK_profile_id_intrests` FOREIGN KEY (`Profile_ID`) REFERENCES `users` (`user_ID`);
+ALTER TABLE `profile_interest`
+  ADD CONSTRAINT `FK_intrested_profile` FOREIGN KEY (`Profile_ID`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
--- Constraints for table `profile_reports`
+-- Constraints for table `profile_report`
 --
-ALTER TABLE `profile_reports`
-  ADD CONSTRAINT `FK_reported_profile` FOREIGN KEY (`reported_profile_id`) REFERENCES `profile` (`Profile_ID`);
+ALTER TABLE `profile_report`
+  ADD CONSTRAINT `FK_reported_profile` FOREIGN KEY (`reported_profile_id`) REFERENCES `profile` (`id`);
 
 --
 -- Constraints for table `seeking`
 --
 ALTER TABLE `seeking`
-  ADD CONSTRAINT `FK_profile_id_seeking` FOREIGN KEY (`Profile_ID`) REFERENCES `users` (`user_ID`);
+  ADD CONSTRAINT `FK_profile_id_seeking` FOREIGN KEY (`id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

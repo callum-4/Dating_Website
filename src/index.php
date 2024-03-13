@@ -5,10 +5,11 @@
 </head>
 <body>
 <?php
+include "Controller/console.php";
 	try{
         $conn = mysqli_connect("localhost", "callum", "test123","dating website");
         $validation_error = "";
-        $getAllQuery = "SELECT * FROM users";
+        $getAllQuery = "SELECT * FROM user";
         $result = mysqli_query($conn, $getAllQuery);
         $users = mysqli_fetch_all($result, MYSQLI_ASSOC); 
         mysqli_free_result($result);
