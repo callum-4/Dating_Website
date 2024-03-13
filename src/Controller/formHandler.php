@@ -5,7 +5,13 @@ $user_logged;
 
 // Function to check if an email is unique when creating an account
 function uniqueEmail($email, $mysqli) {
+<<<<<<< Updated upstream
     $stmt = $mysqli->prepare("SELECT Email FROM users WHERE email = ?");
+=======
+
+    $stmt = $mysqli->prepare("SELECT email FROM users WHERE email = ?");
+
+>>>>>>> Stashed changes
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $stmt->store_result();
@@ -25,7 +31,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $password = $_POST["password"];
 
             if (uniqueEmail($email, $conn)) {
+<<<<<<< Updated upstream
                 $query = "INSERT INTO users (Email, Password) VALUES (?,?);";
+=======
+                $query = "INSERT INTO users (email, password) VALUES (?,?);";
+>>>>>>> Stashed changes
                 $statement = $conn->prepare($query);
                 $statement->execute([$email, $password]);
                 /*
@@ -63,6 +73,30 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             } else {
                 echo "Incorrect password";
             }
+<<<<<<< Updated upstream
+=======
+            
+
+
+                }else{
+                    $query = "SELECT password FROM users WHERE email = '$email';";
+                    $result = mysqli_query($conn, $query);
+                    $fetched_user = mysqli_fetch_array($result);
+
+                    if ($password == $fetched_user["password"]) {
+                        echo "Signed in";
+                        $user_logged = TRUE;
+                        session_start();
+                        $_SESSION['email'] = $email;
+
+                        header("Location: ../View/loggedIn.php");
+
+                        exit();
+                    } else {
+                        echo "Incorrect password";
+                    }
+                }
+>>>>>>> Stashed changes
         } else if ($action === "Profile") {
             $name = $_POST["name"];
             $gender = $_POST["gender"];
@@ -72,7 +106,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $interests = $_POST["interests"];
 			session_start();
             $email = $_SESSION['email'];
+<<<<<<< Updated upstream
             $IDpullquery = "SELECT user_id FROM users WHERE Email ='$email';";
+=======
+            $IDpullquery = "SELECT id FROM users WHERE email ='$email';";
+>>>>>>> Stashed changes
             $IDpullstatement = $conn->prepare($IDpullquery);
             $IDpullstatement->execute();
             $result = $IDpullstatement->get_result()->fetch_assoc();
