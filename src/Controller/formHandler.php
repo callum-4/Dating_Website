@@ -6,7 +6,9 @@ $user_logged;
 
 // Function to check if an email is unique when creating an account
 function uniqueEmail($email, $mysqli) {
-    $stmt = $mysqli->prepare("SELECT Email FROM users WHERE email = ?");
+
+    $stmt = $mysqli->prepare("SELECT email FROM user WHERE email = ?");
+
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $stmt->store_result();
@@ -26,12 +28,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $password = $_POST["password"];
 
             if (uniqueEmail($email, $conn)) {
-                $query = "INSERT INTO users (Email, Password) VALUES (?,?);";
+                $query = "INSERT INTO user (email, password) VALUES (?,?);";
                 $statement = $conn->prepare($query);
                 $statement->execute([$email, $password]);
                 
                 
-                $IDpushquery = "INSERT INTO profile(Profile_ID) SELECT user_id FROM users WHERE Email ='$email';";
+                $IDpushquery = "INSERT INTO profile(id) SELECT id FROM user WHERE email ='$email';";
                 $IDstatement = $conn->prepare($IDpushquery);
                 $IDstatement->execute();
 				session_start();
@@ -49,11 +51,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $email = $_POST["email"];
             $password = $_POST["password"];
                 if(str_contains($email, "@admin.com")){
-                $query = "SELECT Password FROM admin WHERE Email = '$email';";
+                $query = "SELECT password FROM admin WHERE email = '$email';";
                 $result = mysqli_query($conn, $query);
                 $fetched_user = mysqli_fetch_array($result);
 
-                if ($password == $fetched_user["Password"]) {
+                if ($password == $fetched_user["password"]) {
                     echo "Signed in";
                     $user_logged = TRUE;
                     session_start();
@@ -69,11 +71,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 
                 }else{
-                    $query = "SELECT Password FROM users WHERE Email = '$email';";
+                    $query = "SELECT password FROM user WHERE email = '$email';";
                     $result = mysqli_query($conn, $query);
                     $fetched_user = mysqli_fetch_array($result);
 
-                    if ($password == $fetched_user["Password"]) {
+                    if ($password == $fetched_user["password"]) {
                         echo "Signed in";
                         $user_logged = TRUE;
                         session_start();
@@ -97,11 +99,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 			session_start();
             $email = $_SESSION['email'];
-            $IDpullquery = "SELECT user_id FROM users WHERE Email ='$email';";
+            $IDpullquery = "SELECT id FROM user WHERE email ='$email';";
             $IDpullstatement = $conn->prepare($IDpullquery);
             $IDpullstatement->execute();
             $result = $IDpullstatement->get_result()->fetch_assoc();
-            $ID = $result["user_id"];
+            $ID = $result["id"];
             
             //create the profile
             $profile = new Profile($ID, $email, $gender, $name, $dateOfBirth, $description, $interests, $dateOfBirth);
@@ -116,7 +118,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $interestsStatement->execute();
             
             //create seeking for profile
-            $seeking_query = "INSERT INTO `seeking` (`Profile_ID`, `Gender`) VALUES ('$ID','$preferredSex')";
+            $seeking_query = "INSERT INTO `seeking` (`id`, `gender`) VALUES ('$ID','$preferredSex')";
             echo $seeking_query;
             $seekingStatement = $conn->prepare($seeking_query);
             $seekingStatement->execute();
@@ -134,4 +136,3 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 ?>
 </div>
-
