@@ -1,5 +1,6 @@
 <?php
-include "Profile.php";
+require "Profile.php";
+require "Seeking.php";
 class MatchMaker{
 
     public function createMatchScore(
@@ -22,7 +23,19 @@ class MatchMaker{
         return $SIGN_MATCH_SCORES[$signsPair];
     }
 
-    /*public function generatePotentialMatches(Profile $profile, Seeking $seeking){
-        
-    }*/
+    public function generatePotentialMatches(Profile $profile, Seeking $seeking){
+        $seekingGender = $seeking->getGender();
+        $now = new DateTime();
+        $minIntreval = DateInterval::createFromDateString($seeking->getMinAge() . " year");
+        $maxIntreval = DateInterval::createFromDateString($seeking->getMaxAge() . " year");
+        $minAgeDOB = $now->sub($minIntreval)->format('Y-m-d H:i:s');
+        $maxAgeDOB = $now->sub($maxIntreval)->format('Y-m-d H:i:s');
+
+        $selectingGender = '';
+        if($seekingGender != 'No preference'){
+            $selectingGender = " AND gender='$seekingGender'";
+        }
+        $getProfilesSQL = "SELECT * FROM profile WHERE datetime_of_birth >= '$maxAgeDOB' AND datetime_of_birth <= '$minAgeDOB'$selectingGender";
+        echo $getProfilesSQL;
+    }
 }

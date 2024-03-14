@@ -3,15 +3,13 @@
 class Seeking {
     private $minAge;
     private $maxAge;
-    private $interests;
-    private $relationshipType;
+    private $gender;
 
     // Constructor
-    public function __construct($minAge, $maxAge, $interests, $relationshipType) {
+    public function __construct($minAge, $maxAge, $gender) {
         $this->minAge = $minAge;
         $this->maxAge = $maxAge;
-        $this->interests = $interests;
-        $this->relationshipType = $relationshipType;
+        $this->gender = $gender;
     }
 
     // Getters and setters
@@ -31,23 +29,16 @@ class Seeking {
         $this->maxAge = $maxAge;
     }
 
-    public function getInterests() {
-        return $this->interests;
+    public function getGender() {
+        return $this->gender;
     }
 
-    public function setInterests($interests) {
-        $this->interests = $interests;
-    }
-
-    public function getRelationshipType() {
-        return $this->relationshipType;
-    }
-
-    public function setRelationshipType($relationshipType) {
-        $this->relationshipType = $relationshipType;
+    public function setgGnder($gender) {
+        $this->gender = $gender;
     }
 
 }
+/*
 // Define compatibility messages for each zodiac pairing
 $compatibilityMessages = array(
     "aries" => array(
@@ -162,7 +153,7 @@ if (isset($compatibilityMessages[$input1]) && isset($compatibilityMessages[$inpu
     echo $compatibilityMessages[$input2][$input1];
 } else {
     echo "Invalid zodiac signs or no compatibility message found for the provided signs.";
-}
+}*/
 
 
 ?>

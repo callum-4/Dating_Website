@@ -12,15 +12,15 @@ class Profile{
     public $zodiacSign;
 
     function __construct($id, $email, $gender, $name, $dob, $description, $interests, $bannedUntil){
-    $this->id = $id;
-    $this->email = $email;
-    $this->gender = $gender;
-    $this->name = $name;
-    $this->dob = $dob;
-    $this->description = $description;
-    $this->interests = $this->createInterestsArray($interests);
-    $this->bannedUntil = new DateTime('2000-10-10'); //deafult banned until
-    $this->makeZodiacSign();
+        $this->id = $id;
+        $this->email = $email;
+        $this->gender = $gender;
+        $this->name = $name;
+        $this->dob = $dob;
+        $this->description = $description;
+        $this->interests = $this->createInterestsArray($interests);
+        $this->bannedUntil = new DateTime('2000-10-10'); //deafult banned until
+        $this->makeZodiacSign();
     }
 
     
@@ -92,5 +92,4 @@ class Profile{
         
     }
 }
-?>
 
