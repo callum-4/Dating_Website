@@ -23,7 +23,6 @@
         </div>
  <?php
       include "Controller/console.php";
-      require "Model/MatchMaker.php";
 	try{
         $conn = mysqli_connect("localhost", "callum", "test123","dating website");
         $validation_error = "";
@@ -31,12 +30,6 @@
         $result = mysqli_query($conn, $getAllQuery);
         $users = mysqli_fetch_all($result, MYSQLI_ASSOC); 
         mysqli_free_result($result);
-        $matcher = new MatchMaker();
-        $DOB = new DateTime("2000-1-1");
-        $p = new Profile("55","a@b","Male","a",$DOB,"desc","a,b,c,d,1","null");
-        $s = new Seeking(0,150, "Male");
-
-        echo $matcher->generateMatches($p, $s, $conn);
     }catch(Exception $e){
         error_log("Error: ". $e->getMessage());
     } 
