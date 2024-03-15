@@ -36,7 +36,7 @@
         $p = new Profile("55","a@b","Male","a",$DOB,"desc","a,b,c,d,1","null");
         $s = new Seeking(0,150, "Male");
 
-        echo $matcher->generatePotentialMatches($p, $s, $conn);
+        echo $matcher->generateMatches($p, $s, $conn);
     }catch(Exception $e){
         error_log("Error: ". $e->getMessage());
     } 

@@ -55,49 +55,56 @@ class MatchMaker{
         return false;
     }
 
-    public function generatePotentialMatches(Profile $profile, Seeking $seeking, $conn){
+    public function generateMatches(Profile $profile, Seeking $seeking, $conn){
         try{
-        $seekingGender = $seeking->getGender();
-        $minAgeDOB = $this->ageToDob($seeking->getMinAge())->format('Y-m-d H:i:s');
-        $maxAgeDOB = $this->ageToDob($seeking->getMaxAge())->format('Y-m-d H:i:s');
+            $seekingGender = $seeking->getGender();
+            $minAgeDOB = $this->ageToDob($seeking->getMinAge())->format('Y-m-d H:i:s');
+            $maxAgeDOB = $this->ageToDob($seeking->getMaxAge())->format('Y-m-d H:i:s');
 
-        $selectingGender = '';
-        if($seekingGender != 'No preference'){
-            $selectingGender = " AND gender='$seekingGender'";
-        }
-        $getProfilesQuery = "
-            SELECT id, datetime_of_birth FROM profile WHERE
-            datetime_of_birth >= '$maxAgeDOB'
-            AND datetime_of_birth <= '$minAgeDOB'
-            $selectingGender";
-        $result = mysqli_query($conn, $getProfilesQuery);
-        $potentialMatches = $result->fetch_all();
-        $result->free_result();
-        $matches = array();
+            $selectingGender = '';
+            if($seekingGender != 'No preference'){
+                $selectingGender = " AND gender='$seekingGender'";
+            }
+            $getProfilesQuery = "
+                SELECT id, datetime_of_birth FROM profile WHERE
+                datetime_of_birth >= '$maxAgeDOB'
+                AND datetime_of_birth <= '$minAgeDOB'
+                $selectingGender";
+            $result = mysqli_query($conn, $getProfilesQuery);
+            $potentialMatches = $result->fetch_all();
+            $result->free_result();
+            $matches = array();
 
-        foreach($potentialMatches as $matchInfo){
-            $potentialMatchesZodiac = $profile->makeZodiacSign(new DateTime($matchInfo[1]));
-            $score = $this->getSignScore($potentialMatchesZodiac, $profile->zodiacSign);
-            if($score != 0 && $this->checkMatchesSeeking($conn,$matchInfo[0],$profile)){
-                $matchArr = $this->interestComparitor($conn,$profile->interests,$profile->id,$matchInfo[0]);
-                $matchArr[2] += $score;
-                array_push($matches, $matchArr);
+            foreach($potentialMatches as $matchInfo){
+                $potentialMatchesZodiac = $profile->makeZodiacSign(new DateTime($matchInfo[1]));
+                $score = $this->getSignScore($potentialMatchesZodiac, $profile->zodiacSign);
+                if($score != 0 && $this->checkMatchesSeeking($conn,$matchInfo[0],$profile)){
+                    $matchArr = $this->interestComparitor($conn,$profile->interests,$profile->id,$matchInfo[0]);
+                    $matchArr[2] += $score;
+                    array_push($matches, $matchArr);
+                }
             }
+            if(count($matches) != 0){
+                $addMatchupsToTableQuery = 'INSERT INTO `matchup` (`profile_lower_id`,`profile_higher_id`, `match_score`) VALUES ';
+                $query_parts = array();
+                for($x=0; $x<count($matches); $x++){
+                    $query_parts[] = "('" . $matches[$x][0] . "', '" . $matches[$x][1] . "', '" . $matches[$x][2] . "')";
+                }
+                $addMatchupsToTableQuery .= implode(',', $query_parts);
+                $addMatchupsToTableQuery .= " ON DUPLICATE KEY UPDATE match_score=VALUES (match_score)";
+                $matchupsStatement = $conn->prepare($addMatchupsToTableQuery);
+                $matchupsStatement->execute();
+           }
+        }catch(Exception $e){
+            console_log($e->getMessage());
         }
-        if(count($matches) != 0){
-            $addMatchupsToTableQuery = 'INSERT INTO `matchup` (`profile_lower_id`,`profile_higher_id`, `match_score`) VALUES ';
-            $query_parts = array();
-            for($x=0; $x<count($matches); $x++){
-                $query_parts[] = "('" . $matches[$x][0] . "', '" . $matches[$x][1] . "', '" . $matches[$x][2] . "')";
-            }
-            $addMatchupsToTableQuery .= implode(',', $query_parts);
-            $addMatchupsToTableQuery .= " ON DUPLICATE KEY UPDATE match_score=VALUES (match_score)";
-            console_log($addMatchupsToTableQuery);
-            $matchupsStatement = $conn->prepare($addMatchupsToTableQuery);
-            $matchupsStatement->execute();
-        }
-    }catch(Exception $e){
-        console_log($e->getMessage());
     }
+
+    public function makeUnrecommendedMatch($conn, Profile $profile, int $matchId){
+        $matchArr = $this->interestComparitor($conn,$profile->interests,$profile->id,$matchId);
+        $addMatchupsToTableQuery = "INSERT INTO `matchup` (`profile_lower_id`,`profile_higher_id`, `match_score`) 
+        VALUES ('" . $matchArr[0] . "', '" . $matchArr[1] . "', '" . $matchArr[2] . "')";
+        $matchupsStatement = $conn->prepare($addMatchupsToTableQuery);
+        $matchupsStatement->execute();
     }
 }
