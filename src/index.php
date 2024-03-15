@@ -33,10 +33,10 @@
         mysqli_free_result($result);
         $matcher = new MatchMaker();
         $DOB = new DateTime("2000-1-1");
-        $p = new Profile("1","a@b","Male","a",$DOB,"desc","a,b,c","null");
-        $s = new Seeking(18,150, "Female");
+        $p = new Profile("55","a@b","Male","a",$DOB,"desc","a,b,c,d,1","null");
+        $s = new Seeking(0,150, "Male");
 
-        echo $matcher->generatePotentialMatches($p, $s);
+        echo $matcher->generatePotentialMatches($p, $s, $conn);
     }catch(Exception $e){
         error_log("Error: ". $e->getMessage());
     } 

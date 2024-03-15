@@ -20,7 +20,7 @@ class Profile{
         $this->description = $description;
         $this->interests = $this->createInterestsArray($interests);
         $this->bannedUntil = new DateTime('2000-10-10'); //deafult banned until
-        $this->makeZodiacSign();
+        $this->zodiacSign = $this->makeZodiacSign($dob);
     }
 
     
@@ -62,12 +62,12 @@ class Profile{
         return "UPDATE profile SET `name`='$this->name', `gender`='$this->gender', `description`='$this->description',  `datetime_of_birth`='$this->dob' WHERE `id`='$this->id'";
     }
 
-    private function makeZodiacSign(){
+    public function makeZodiacSign(Datetime $datetimeOB){
         $year = '2000';//compare only months and ignore the year
-        $this->dob->format($year."-m-d");
-        if ($this->dob <= new DateTime("2000-01-29")) {
-            $this->zodiacSign = "Capricorn";
-            return;
+        $day = $datetimeOB->format('m-d');
+        $date = new \DateTime("$year-$day");
+        if ($date <= new DateTime("2000-01-29")) {
+            return "Capricorn";
         }
         $zodiacs = array(
             "Aquarius"=>"2000-02-18",
@@ -84,11 +84,11 @@ class Profile{
             "Capricorn"=>"2000-12-31",
         );
         foreach ($zodiacs as $zodiac => $endDate) {
-            if($this->dob <= new DateTime($endDate)) {
-                $this->zodiacSign = $zodiac;
-                return;
+            if($date <= new DateTime($endDate)) {
+                return $zodiac;
             }
         }
+        return "zodiac could not be determined";
         
     }
 }

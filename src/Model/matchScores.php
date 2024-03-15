@@ -1,5 +1,5 @@
 <?php 
-define("SIGN_MATCH_SCORES",[
+define("SIGN_MATCH_SCORES",array(
         //Aquarius
         'AquariusAquarius'=>5,
         'AquariusAries'=>4,
@@ -98,5 +98,5 @@ define("SIGN_MATCH_SCORES",[
         // Taurus
         'TaurusTaurus' => 5,
         'TaurusVirgo' => 6,
-    ]
+    )
 );
