@@ -3,6 +3,13 @@ require "Profile.php";
 require "Seeking.php";
 class MatchMaker{
 
+    public function ageToDob(int $age){
+        $now = new DateTime();
+        $intreval = DateInterval::createFromDateString($age . " year");
+        $dob = $now->sub($intreval);
+        return $dob;
+    }
+
     public function createInterestScore(
         array $profile_one_interests,
         array $profile_two_interests
@@ -22,14 +29,37 @@ class MatchMaker{
         return SIGN_MATCH_SCORES[$signsPair];
     }
 
+    public function interestComparitor($conn, Array $profileInterests, int $profileId, int $matchId){
+        $matchesIntrestsQuery = "SELECT interest FROM profile_interest WHERE profile_id='$matchId'";
+        $intrestResult = mysqli_query($conn, $matchesIntrestsQuery);
+        $matchesInterests = $intrestResult->fetch_all();
+        $intrestResult->free_result();
+        $score = $this->createInterestScore($profileInterests, array_column($matchesInterests,0));
+
+        $matchupData = [$matchId,$profileId];
+        sort($matchupData,SORT_NUMERIC);
+        array_push($matchupData, $score);
+        return $matchupData;
+    }
+
+    public function checkMatchesSeeking($conn, int $matchId, Profile $profile){
+        $seekingQuery = "SELECT gender, max_age, min_age FROM seeking WHERE id = $matchId";
+        $seekingResult = mysqli_query($conn, $seekingQuery);
+        $seeking = $seekingResult->fetch_row();
+        $seekingResult->free_result();
+        if($seeking[0] == 'No preference' || $seeking[0] == $profile->gender){
+            if($profile->dob >= $this->ageToDob($seeking[1]) && $profile->dob <= $this->ageToDob($seeking[2])){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public function generatePotentialMatches(Profile $profile, Seeking $seeking, $conn){
         try{
         $seekingGender = $seeking->getGender();
-        $now = new DateTime();
-        $minIntreval = DateInterval::createFromDateString($seeking->getMinAge() . " year");
-        $maxIntreval = DateInterval::createFromDateString($seeking->getMaxAge() . " year");
-        $minAgeDOB = $now->sub($minIntreval)->format('Y-m-d H:i:s');
-        $maxAgeDOB = $now->sub($maxIntreval)->format('Y-m-d H:i:s');
+        $minAgeDOB = $this->ageToDob($seeking->getMinAge())->format('Y-m-d H:i:s');
+        $maxAgeDOB = $this->ageToDob($seeking->getMaxAge())->format('Y-m-d H:i:s');
 
         $selectingGender = '';
         if($seekingGender != 'No preference'){
@@ -48,32 +78,24 @@ class MatchMaker{
         foreach($potentialMatches as $matchInfo){
             $potentialMatchesZodiac = $profile->makeZodiacSign(new DateTime($matchInfo[1]));
             $score = $this->getSignScore($potentialMatchesZodiac, $profile->zodiacSign);
-            if($score != 0){
-                $matchesIntrestsQuery = "SELECT interest FROM profile_interest WHERE profile_id='$matchInfo[0]'";
-                $intrestResult = mysqli_query($conn, $matchesIntrestsQuery);
-                $matchesInterests = $intrestResult->fetch_all();
-                $intrestResult->free_result();
-                $score += $this->createInterestScore($profile->interests, array_column($matchesInterests,0));
-
-                $idsSorted = [$matchInfo[0],$profile->id];
-                sort($idsSorted,SORT_NUMERIC);
-                array_push($matches,[$idsSorted[0],$idsSorted[1],$score]);
+            if($score != 0 && $this->checkMatchesSeeking($conn,$matchInfo[0],$profile)){
+                $matchArr = $this->interestComparitor($conn,$profile->interests,$profile->id,$matchInfo[0]);
+                $matchArr[2] += $score;
+                array_push($matches, $matchArr);
             }
         }
-        //console_log($matches);
-        /*$addMatchupsToTableQuery = "INSERT INTO table (id, name, age) VALUES(1, "A", 19) ON DUPLICATE KEY UPDATE    
-        name="A", age=19
-        "*/
-        
-        $addMatchupsToTableQuery = 'INSERT INTO `matchup` (`profile_lower_id`,`profile_higher_id`, `match_score`) VALUES ';
-        $query_parts = array();
-        for($x=0; $x<count($matches); $x++){
-            $query_parts[] = "('" . $matches[$x][0] . "', '" . $matches[$x][1] . ", '" . $matches[$x][2] . "')";
+        if(count($matches) != 0){
+            $addMatchupsToTableQuery = 'INSERT INTO `matchup` (`profile_lower_id`,`profile_higher_id`, `match_score`) VALUES ';
+            $query_parts = array();
+            for($x=0; $x<count($matches); $x++){
+                $query_parts[] = "('" . $matches[$x][0] . "', '" . $matches[$x][1] . "', '" . $matches[$x][2] . "')";
+            }
+            $addMatchupsToTableQuery .= implode(',', $query_parts);
+            $addMatchupsToTableQuery .= " ON DUPLICATE KEY UPDATE match_score=VALUES (match_score)";
+            console_log($addMatchupsToTableQuery);
+            $matchupsStatement = $conn->prepare($addMatchupsToTableQuery);
+            $matchupsStatement->execute();
         }
-        $addMatchupsToTableQuery .= implode(',', $query_parts);
-        $addMatchupsToTableQuery .= " ON DUPLICATE KEY UPDATE match_score=VALUES (match_score)";
-        $matchupsStatement = $conn->prepare($addMatchupsToTableQuery);
-        $matchupsStatement->execute();
     }catch(Exception $e){
         console_log($e->getMessage());
     }
