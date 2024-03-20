@@ -27,10 +27,12 @@ class Admin
         //finnish once profile complete
     }
 
-    function deleteUser($userId)
-    {
-        //db.deleteUser($userId)
-        //db should cascade to all instances
+    function deleteUser(int $userId, $conn)
+    {//delete and then insert to get the cascade
+        $delStr = "DELETE FROM profile WHERE `id`=$userId;
+        INSERT INTO `profile`(`id`,`banned_until`) VALUES ($userId,'9999-12-31')";
+        $deleteStatement = $conn->prepare($delStr);
+        $deleteStatement->execute();
     }
 
     function deleteAd($adId)
