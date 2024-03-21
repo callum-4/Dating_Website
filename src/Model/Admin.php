@@ -1,45 +1,41 @@
 <?php
-    class Admin{
-        private $id;
-        private $email;
-        public function __construct($id, $email){
-            $this->id = $id;
-            $this->email = $email;
-
-            //$this->password = $password
-            //db hash and put into the db
-        }
-
-        function getId(){
-            return $this->id;
-        }
-
-        function getEmail(){   
-            return $this->email;
-        }
-
-        function setEmail($email){
-            $this->email = $email;
-        }
-
-        function banUser($userId, $daysBanned){
-            date_default_timezone_set('Ireland/Dublin');
-            //$user = db.getUser($userId);
-            //$user.setBannedUntill(date('Y-m-d', strtotime("+$daysBanned days"))
-            return date('Y-m-d', strtotime("+30 days"));
-        }
-
-        function editProfile(){
-            //finnish once profile complete
-        }
-
-        function deleteUser($userId){
-            //db.deleteUser($userId)
-            //db should cascade to all instances
-        }
-
-        function deleteAd($adId){
-            //db.deleteAd($adId)
-        }
+class Admin
+{
+    private $id;
+    public function __construct($id)
+    {
+        $this->id = $id;
     }
-?>
+
+    function getId()
+    {
+        return $this->id;
+    }
+
+    function banUser(int $userId, int $daysBanned, $conn)
+    {
+        date_default_timezone_set('utc');
+        $intreval = DateInterval::createFromDateString($daysBanned . "day");
+        $banDate = ((new DateTime())->add($intreval))->format('Y-m-d');
+        $banStr = "UPDATE profile SET `banned_until`='$banDate' WHERE `id`='$userId'";
+        $banStatement = $conn->prepare($banStr);
+        $banStatement->execute();
+    }
+
+    function editProfile()
+    {
+        //finnish once profile complete
+    }
+
+    function deleteProfile(int $userId, $conn)
+    {//delete to get the cascade then re-insert to track what has been deleted
+        $delStr = "DELETE FROM profile WHERE `id`=$userId;
+        INSERT INTO `profile`(`id`,`banned_until`) VALUES ($userId,'9999-12-31')";
+        $deleteStatement = $conn->prepare($delStr);
+        $deleteStatement->execute();
+    }
+
+    function editAd(int $adId, $conn)
+    {
+    }
+}
