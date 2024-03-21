@@ -5,7 +5,8 @@ require "../Model/Profile.php";
 $user_logged;
 
 // Function to check if an email is unique when creating an account
-function uniqueEmail($email, $mysqli) {
+function uniqueEmail($email, $mysqli)
+{
 
     $stmt = $mysqli->prepare("SELECT email FROM user WHERE email = ?");
 
@@ -25,18 +26,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         if ($action === "signUp") {
             $email = $_POST["email"];
-            $password = password_hash($_POST["password"],PASSWORD_DEFAULT);
+            $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
 
             if (uniqueEmail($email, $conn)) {
                 $query = "INSERT INTO user (email, password) VALUES (?,?);";
                 $statement = $conn->prepare($query);
                 $statement->execute([$email, $password]);
-                
-                
+
+
                 $IDpushquery = "INSERT INTO profile(id) SELECT id FROM user WHERE email ='$email';";
                 $IDstatement = $conn->prepare($IDpushquery);
                 $IDstatement->execute();
-				session_start();
+                session_start();
                 $_SESSION['email'] = $email;
 
                 $conn = null;
@@ -47,47 +48,42 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             } else {
                 echo "That email is already in use";
             }
+
         } else if ($action === "Login") {
             $email = $_POST["email"];
             $password = $_POST["password"];
-                if(str_contains($email, "@admin.com")){
-                $query = "SELECT password FROM admin WHERE email = '$email';";
-                $result = mysqli_query($conn, $query);
-                $fetched_user = mysqli_fetch_array($result);
+            $query = "SELECT user.password, profile.banned_until
+                FROM user
+                LEFT JOIN profile
+                ON user.id=profile.id
+                WHERE user.email='$email'";
+            $result = mysqli_query($conn, $query);
+            $fetched_user = mysqli_fetch_assoc($result);
 
-                if (password_verify($password, $fetched_user["password"])) {
-                    echo "Signed in";
+            if (password_verify($password, $fetched_user["password"])) {
+                session_start();
+                if (str_contains($email, "@astrolove.admin.com")) {
                     $user_logged = TRUE;
-                    session_start();
                     $_SESSION['email'] = $email;
-
+                    $_SESSION['id'] = $fetched_user["id"];
                     header("Location: ../View/adminConsole.php");
-
                     exit();
-                }else {
-                   echo "Incorrect password";
-            }
-            
-
-
-                }else{
-                    $query = "SELECT password FROM user WHERE email = '$email';";
-                    $result = mysqli_query($conn, $query);
-                    $fetched_user = mysqli_fetch_array($result);
-
-                    if (password_verify($password, $fetched_user["password"])) {
-                        echo "Signed in";
+                } else {
+                    $now = new DateTime();
+                    $bannedUntil = $fetched_user["banned_until"];
+                    if ($now >= (new DateTime($bannedUntil)) || $bannedUntil == null) {
                         $user_logged = TRUE;
-                        session_start();
                         $_SESSION['email'] = $email;
-
+                        $_SESSION['id'] = $fetched_user["id"];
                         header("Location: ../View/loggedIn.php");
-
                         exit();
                     } else {
-                        echo "Incorrect password";
+                        echo "This account has been banned until $bannedUntil";
                     }
                 }
+            } else {
+                echo "Incorrect password";
+            }
         } else if ($action === "Profile") {
             $name = $_POST["name"];
             $gender = $_POST["gender"];
@@ -97,16 +93,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $interests = $_POST["interests"];
             //break interests up into an array
 
-			session_start();
+            session_start();
             $email = $_SESSION['email'];
             $IDpullquery = "SELECT id FROM user WHERE email ='$email';";
             $IDpullstatement = $conn->prepare($IDpullquery);
             $IDpullstatement->execute();
             $result = $IDpullstatement->get_result()->fetch_assoc();
             $ID = $result["id"];
-            
+
             //create the profile
             $profile = new Profile($ID, $email, $gender, $name, $dateOfBirth, $description, $interests, $dateOfBirth);
+
+            $_SESSION['profile'] = $profile;
             echo $profile->getUpdateProfileInDBQuery();
             $statement = $conn->prepare($profile->getUpdateProfileInDBQuery());
             $statement->execute();
@@ -114,7 +112,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             //create the profiles intrests
             $interestsStatement = $conn->prepare($profile->getInsertIntrestsQuery());
             $interestsStatement->execute();
-            
+
             //create seeking for profile
             $seeking_query = "INSERT INTO `seeking` (`id`, `gender`) VALUES ('$ID','$preferredSex')";
             echo $seeking_query;
@@ -129,7 +127,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             echo "Invalid action";
         }
     } catch (mysqli_sql_exception $e) {
-        die("Post failed." . $e->getMessage());
+        die ("Post failed." . $e->getMessage());
     }
 }
 ?>
