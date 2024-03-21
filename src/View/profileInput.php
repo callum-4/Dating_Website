@@ -27,10 +27,10 @@
                     <br>
                     Please choose what type of profiles you would like to see:
                     <br>
-                    <input type="radio" id="women" name="preferredSex" value="Women">
+                    <input type="radio" id="women" name="preferredSex" value="Female">
                     <label for="women">Women</label>
                     <br>
-                    <input type="radio" id="men" name="preferredSex" value="Men">
+                    <input type="radio" id="men" name="preferredSex" value="Male">
                     <label for="men">Men</label>
                     <br>
                     <input type="radio" id="noPreference" name="preferredSex" value="No preference">

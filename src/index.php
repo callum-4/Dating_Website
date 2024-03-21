@@ -27,7 +27,6 @@
             </div>
             <?php
             include "Controller/console.php";
-
             try {
                 $conn = mysqli_connect("localhost", "callum", "test123", "dating website");
                 $validation_error = "";
@@ -69,7 +68,6 @@
                 </div>
             </div>
         </div>
-    </div>
     </div>
 </body>
 
