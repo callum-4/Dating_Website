@@ -3,9 +3,9 @@
 body{
     background-image: url("Design/StarBackground.png");
     background-repeat: repeat-x;
-    background-position: center;
     background-color: #220c34;
     background-size: cover;
+    background-position-y: 0px;
 }
 .container {
     width: 100%; 
@@ -17,6 +17,10 @@ body{
 }
 .formHolderSignup {
     background-color: #D9CCE5; 
+}
+
+.full-width {
+    width: 100%;
 }
 /*
 .formHolderSignup{
