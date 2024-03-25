@@ -16,7 +16,8 @@
                 <div class="row m-0 mt-2">
                     <div class="col-1"></div>
                     <div class="col-9 cols-shrinkable">
-                        <input type="text" class="form-control" name="searchText" placeholder="Search" value=<?php echo $_POST["searchText"]; ?>>
+                        <input type="text" class="form-control" name="searchText" placeholder="Search" maxlength="50"
+                            pattern="[A-Za-z0-9]*" title="your search may only include letters and numbers" value=<?php echo $_POST["searchText"]; ?>>
                     </div>
                     <button type="submit" name="action" class="col btn btn-primary"
                         style="max-width: 134px">Search</button>
@@ -68,10 +69,8 @@
                 }
                 try {
                     $conn = mysqli_connect("localhost", "callum", "test123", "dating website");
-                    console_log($searchQuery);
                     $result = mysqli_query($conn, $searchQuery);
                     $fetched_profiles = mysqli_fetch_all($result);
-                    console_log($fetched_profiles);
                     foreach ($fetched_profiles as $p) {
                         $name = $p[1];
                         $gender = $p[2];
