@@ -20,7 +20,7 @@ class Profile{
         $this->description = $description;
         $this->interests = $this->createInterestsArray($interests);
         $this->bannedUntil = new DateTime('2000-10-10'); //deafult banned until
-        $this->zodiacSign = $this->makeZodiacSign($dob);
+        $this->zodiacSign = $this->makeZodiacSign($this->dob);
     }
 
     
@@ -59,7 +59,7 @@ class Profile{
     }
 
     function getUpdateProfileInDBQuery(){
-        return "UPDATE profile SET `name`='$this->name', `gender`='$this->gender', `description`='$this->description',  `datetime_of_birth`='$this->dob' WHERE `id`='$this->id'";
+        return "UPDATE profile SET `name`='$this->name', `gender`='$this->gender', `description`='$this->description',  `datetime_of_birth`='{$this->dob->format('Y-m-d')}' WHERE `id`='$this->id'";
     }
 
     public function makeZodiacSign(Datetime $datetimeOB){
